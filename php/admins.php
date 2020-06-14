@@ -32,6 +32,7 @@ if($_SESSION['userlevel'] !== "admins"){
     <p>
         
         <a href="sign_out.php" class="btn btn-danger">Sign Out</a>
+        <a href ="add_user.php" class ="btn btn-primary">Add User</a>
     </p>
 </body>
 </html>
