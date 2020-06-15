@@ -100,6 +100,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 echo '<div class="alert alert-success" role="alert">
                 User added!
               </div>';
+              
                 
             } else{
                 echo "Something went wrong. Please try again later.";
@@ -123,8 +124,48 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Add Users</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
+        body{ font: 14px sans-serif; background-color: #2f323a;}
+        .wrapper{ 
+            width: 350px;
+             margin-left: 40%; 
+             margin-top: 6%; color: white; 
+             background-color: black; 
+             padding: 30px; 
+             border-radius: 10px; 
+             box-shadow: 0px 0px 20px 0px rgba(253, 253, 253, 0.75);
+            } 
+
+           
+
+        .option:checked ~ .spann{
+                color: white;
+                background-color: #2e86de;
+                transform: scale(1.1);
+        }
+
+        .spann{
+                position: relative;
+                display: inline-block;
+                margin: 20px 10px;
+                padding: 12px;
+                width: 100px;
+                background: #000;
+                border: 2.5px solid #2e86de;
+                color: white;
+                border-radius: 25px;
+                cursor: pointer;
+                margin-bottom: 10px;
+                margin-top: 0px;
+                font-weight: 100;
+                text-align: center;
+    
+            }
+        input{
+                display: none;
+            }
+
+            
+        
     </style>
     
 </head>
@@ -140,13 +181,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="form-group <?php echo (!empty($chosenUserError)) ? 'has-error' : ''; ?>">
         <label>
             <input  type = "radio" class="option" id="manager" name="user" value="manager">
-            <span>MANAGER</span>
+            <span class="spann">MANAGER</span>
             
         </label>
 
         <label>
             <input  type = "radio" class="option" id="staff" name="user" value="staff">
-            <span>STAFF</span>
+            <span class = "spann">STAFF</span>
         </label>
         <span class="help-block"><?php echo $chosenUserError; ?></span>
         </div>

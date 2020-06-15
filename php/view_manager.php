@@ -71,9 +71,21 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         .wrapper{
-            width: 500px;
+            width: 700px;
             margin: 0 auto;
+            padding: 20px;
         }
+        body{ font: 14px sans-serif; text-align: center; }
+        body{ font: 14px sans-serif; background-color: #2f323a;}
+        .wrapper{ 
+            width: 700px;
+             margin-left: 27.5%; 
+             margin-top: 6%; color: white; 
+             background-color: black; 
+             padding: 30px; 
+             border-radius: 10px; 
+             box-shadow: 0px 0px 20px 0px rgba(253, 253, 253, 0.75);
+            } 
     </style>
 </head>
 <body>

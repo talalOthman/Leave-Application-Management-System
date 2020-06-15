@@ -16,19 +16,22 @@ if($conn === false){
 
 
 
-/*
 
-$username = "talal";
-$password = "talal123";
+/*
+$username = "Admin";
+$password = "admin123";
+$status = "ACTIVE";
 
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-$sql = "INSERT INTO admins(username, password) VALUES ('$username', '$hashed_password');";
+$sql = "INSERT INTO admins(username, password, status) VALUES ('$username', '$hashed_password', '$status');";
 
 if(mysqli_query($conn, $sql)){
     
 }
+
 */
+
 
 
 

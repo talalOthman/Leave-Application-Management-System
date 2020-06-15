@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
     <style type="text/css">
         .wrapper{
-            width: 650px;
+            width: 900px;
             margin: 0 auto;
         }
         .page-header h2{
@@ -16,10 +17,22 @@
         }
         table tr td:last-child a{
             margin-right: 15px;
+            
         }
         a.btn{
             margin-left: 10px;
         }
+        body{ font: 14px sans-serif; text-align: center; 
+        }
+        body{ font: 14px sans-serif; background-color: #2f323a;}
+        .wrapper{ 
+             background-color: black;
+             margin-top: 6%; 
+             color: #23527C;
+             padding: 30px; 
+             border-radius: 10px; 
+             box-shadow: 0px 0px 20px 0px rgba(253, 253, 253, 0.75);
+            } 
     </style>
     <script type="text/javascript">
         $(document).ready(function(){

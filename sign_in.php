@@ -6,12 +6,16 @@ session_start();
 
 
 
+
+
 // if the user is already logged in 
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
 
     // each user will be directed to the page that describe their roles.
     header("location:  php/".$_SESSION['userlevel'].".php");
 }
+
+
 
 require_once "php/connect.php";
 
@@ -26,6 +30,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $passwordError = "";
     $inactiveError = "";
 
+
+    
+
+
+
+
     
     
     
@@ -35,7 +45,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(!empty($username) && !empty($password)){
 
         //The sql query to  check for the username entered by the user.
-        $sql ="SELECT id, username, password FROM $userLevel WHERE username = ?;";
+        $sql ="SELECT id, username, password, status FROM $userLevel WHERE username = ?;";
 
         //preparing the statement
         if($stmt = mysqli_prepare($conn, $sql)){
@@ -56,13 +66,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 if(mysqli_stmt_num_rows($stmt) == 1){
 
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
+                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password, $status);
 
                     if(mysqli_stmt_fetch($stmt)){
                         //comparing the password given with the hashed password in the database
                         if(password_verify($password, $hashed_password)){
                             // Password is correct, so start a new session
-
+                            if($status === "ACTIVE"){
                             session_start();
 
                             // Store data in session variables
@@ -73,11 +83,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             // will store the username if the user
                             $_SESSION["username"] = $username; 
                             $_SESSION["password"] = $password;
-                            
+                           
+                            } else{
+                                $inactiveError = "Your account is de-activaited";
+                                
+                            }
                             // will direct the user to the page of what type of user they chose.
                             header("location: php/".$userLevel.".php");
                         } else{
-                            $passwordError = "The password you entered was not valid.";
+                            $passwordError = "The password you entered was fuck not valid.";
                         }
                     }
 
@@ -87,11 +101,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             } else{
                 echo "Something went wrong!";
             }
+            
 
             mysqli_close($conn);
         }
     }
 }
+
 
 
 
@@ -123,7 +139,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <h2>Login</h2>
         <p>
         <?php 
-        if(isset($_POST['login-submit']) && true){
+        if(isset($_POST['login-submit'])){
         echo $inactiveError;} 
         ?>
         </p>
