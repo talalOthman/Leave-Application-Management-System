@@ -97,8 +97,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Redirect to login page
-                echo "User added!";
-                header("location: add_user.php");
+                echo '<div class="alert alert-success" role="alert">
+                User added!
+              </div>';
+                
             } else{
                 echo "Something went wrong. Please try again later.";
             }
@@ -174,7 +176,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="reset" class="btn btn-default" value="Reset">
             </div>
 
+            
+
             <a href ="admins.php" class ="btn btn-success">Menu Page</a>
+
+            
 
     
            
