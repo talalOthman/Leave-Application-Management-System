@@ -84,7 +84,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO $chosenUser (username, password) VALUES (?, ?)";
+        $sql = "INSERT INTO $chosenUser (username, password, status) VALUES (?, ?, 'ACTIVE')";
          
         if($stmt = mysqli_prepare($conn, $sql)){
             // Bind variables to the prepared statement as parameters

@@ -66,6 +66,7 @@
                                         echo "<th>#</th>";
                                         echo "<th>Username</th>";
                                         echo "<th>Password</th>";
+                                        echo "<th>Status</th>";
                                         echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
@@ -75,10 +76,11 @@
                                         echo "<td>" . $row['id'] . "</td>";
                                         echo "<td>" . $row['username'] . "</td>";
                                         echo "<td>" . $row['password'] . "</td>";
+                                        echo "<td>" . $row['status'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='update_manager.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='view_manager.php?id=". $row['id'] ."' title='View Manager' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='update_manager.php?id=". $row['id'] ."' title='Update Manager' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                            echo "<a href='delete_manager.php?id=". $row['id'] ."' title='De-Activate Manager' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
@@ -124,6 +126,7 @@
                                         echo "<th>#</th>";
                                         echo "<th>Username</th>";
                                         echo "<th>Password</th>";
+                                        echo "<th>Status</th>";
                                         echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
@@ -133,10 +136,11 @@
                                         echo "<td>" . $row['id'] . "</td>";
                                         echo "<td>" . $row['username'] . "</td>";
                                         echo "<td>" . $row['password'] . "</td>";
+                                        echo "<td>" . $row['status'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='update_staff.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='view_staff.php?id=". $row['id'] ."' title='View staff' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='update_staff.php?id=". $row['id'] ."' title='Update staff' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                            echo "<a href='delete_staff.php?id=". $row['id'] ."' title='De-Activate staff' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }

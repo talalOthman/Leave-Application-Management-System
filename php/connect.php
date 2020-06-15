@@ -12,22 +12,23 @@ if($conn === false){
 }
 
 
+
+
+
+
 /*
 
-TO ADD USERS MANUALLY
-
-
-
-$username = "";
-$password = "";
+$username = "talal";
+$password = "talal123";
 
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-$sql = "INSERT INTO (WHAT KIND OF USER)(username, password) VALUES ('$username', '$hashed_password');";
+$sql = "INSERT INTO admins(username, password) VALUES ('$username', '$hashed_password');";
 
 if(mysqli_query($conn, $sql)){
     
 }
 */
+
 
 

@@ -24,6 +24,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $password = trim($_POST["password"]);
     $usernameError ="";
     $passwordError = "";
+    $inactiveError = "";
+
+    
+    
+    
 
 
     // to check if the username and password have values.
@@ -67,6 +72,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["id"] = $id;
                             // will store the username if the user
                             $_SESSION["username"] = $username; 
+                            $_SESSION["password"] = $password;
                             
                             // will direct the user to the page of what type of user they chose.
                             header("location: php/".$userLevel.".php");
@@ -79,7 +85,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $usernameError = "No account found with that username.";
                 }
             } else{
-                echo "Something  went wrong!";
+                echo "Something went wrong!";
             }
 
             mysqli_close($conn);
@@ -115,7 +121,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     <form class="form" id="form" action="<?=$_SERVER['PHP_SELF'];?>" method="POST">
         <h2>Login</h2>
-        
+        <p>
+        <?php 
+        if(isset($_POST['login-submit']) && true){
+        echo $inactiveError;} 
+        ?>
+        </p>
+        <br>
+
         <br>
         
         <input class="username" id = "username" type="text" name="username" placeholder="Username" value = <?php if(isset($_POST['login-submit'])){echo $username;}?>>

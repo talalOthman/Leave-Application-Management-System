@@ -112,7 +112,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
-                    header("location: error.php");
+                    header("location: ../sign_in.php");
                     exit();
                 }
                 
