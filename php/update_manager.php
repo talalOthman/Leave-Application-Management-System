@@ -54,7 +54,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 
             // Set parameters
             $param_username = $input_username;
-            $param_new_password = $input_new_password;
+            $param_new_password = password_hash($input_new_password, PASSWORD_DEFAULT);
             $param_id = $id;
 
             // Bind variables to the prepared statement as parameters
@@ -175,8 +175,8 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         </div>
                     
                         <div class="form-group <?php echo (!empty($new_password_err)) ? 'has-error' : ''; ?>">
-                            <label>Password</label>
-                            <input type="password" name="new_password" class="form-control" value="<?php echo $new_password; ?>">
+                            <label>New password</label>
+                            <input type="password" name="new_password" class="form-control"  >
                             <span class="help-block"><?php echo $new_password_err;?></span>
                         </div>
                         <input type="hidden" name="id" value="<?php echo $id; ?>"/>

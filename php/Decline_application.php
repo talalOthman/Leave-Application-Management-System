@@ -17,10 +17,10 @@ header("location: ../sign_in.php");
 if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     // Include config file
     require_once "connect.php";
-    
+     
     $manager_id = $_SESSION['id'];
     // Prepare a select statement
-    $sql = "UPDATE form SET status = 'APPROVED' , manager_id = $manager_id  WHERE id = ?";
+    $sql = "UPDATE form SET status = 'DECLINED', manager_id = $manager_id WHERE id = ?";
     
     if($stmt = mysqli_prepare($conn, $sql)){
         // Bind variables to the prepared statement as parameters
@@ -28,7 +28,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
         
         // Set parameters
         $param_id = trim($_GET["id"]);
-    
+        
         
         // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){

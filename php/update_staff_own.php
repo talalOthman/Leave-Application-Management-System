@@ -44,13 +44,6 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
 
 
         
-    
-    if(empty($_POST['new_password'])){
-        $new_password_err = "Please enter a password.";     
-    } else{
-        
-        $_SESSION['password'] = $_POST['new_password'];
-    }
 
 
     
@@ -58,13 +51,12 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
     
     
     // Check input errors before inserting in database
-    if(empty($username_err) && empty($new_password_err)){
+    if(empty($username_err)){
         // Prepare an update statement
-        $sql = "UPDATE staff SET username=?, password=? WHERE id=?";
+        $sql = "UPDATE staff SET username=? WHERE id=?";
         
         // Set parameters
         $param_new_username = $_SESSION["username"];
-        $param_new_password = password_hash($_SESSION["password"], PASSWORD_DEFAULT);
         $param_id = $_SESSION["id"];
         
          
@@ -73,7 +65,7 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
             
 
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssi", $param_new_username,  $param_new_password, $param_id);
+            mysqli_stmt_bind_param($stmt, "si", $param_new_username,  $param_id);
             
             
             
@@ -142,11 +134,7 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
                             <span class="help-block"><?php echo $username_err;?></span>
                         </div>
                     
-                        <div class="form-group <?php echo (!empty($new_password_err)) ? 'has-error' : ''; ?>">
-                            <label>New password</label>
-                            <input type="password" name="new_password" class="form-control" value="<?php echo $_SESSION['password']; ?>">
-                            <span class="help-block"><?php echo $new_password_err;?></span>
-                        </div>
+                    
                         <input type="hidden" name="id" value=<?php echo $_SESSION["id"]; ?>>
                         <input type="submit" class="btn btn-primary" value="Submit">
                         <a href="staff.php" class="btn btn-default">Cancel</a>

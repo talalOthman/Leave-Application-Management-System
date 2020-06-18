@@ -83,13 +83,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             // will store the username if the user
                             $_SESSION["username"] = $username; 
                             $_SESSION["password"] = $password;
+
+                            // will direct the user to the page of what type of user they chose.
+                            header("location: php/".$userLevel.".php");
                            
                             } else{
                                 $inactiveError = "Your account is de-activaited";
                                 
                             }
-                            // will direct the user to the page of what type of user they chose.
-                            header("location: php/".$userLevel.".php");
+                            
                         } else{
                             $passwordError = "The password you entered was fuck not valid.";
                         }
