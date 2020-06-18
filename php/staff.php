@@ -43,6 +43,7 @@ if($_SESSION['userlevel'] !== "staff"){
         
         <a href="sign_out.php" class="btn btn-danger">Sign Out</a>
         <a href="update_staff_own.php" class="btn btn-primary">Update personal information</a>
+        <a href="staff_leave_apply.php" class="btn btn-primary">Apply for leave</a>
     </p>
 </body>
 </html>

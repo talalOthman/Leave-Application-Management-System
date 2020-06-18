@@ -9,6 +9,12 @@ if($_SESSION['userlevel'] !== "admins"){
     header("location: ../sign_in.php");
 }
 
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: ../sign_in.php");
+    exit;
+}
+
 
 
  
