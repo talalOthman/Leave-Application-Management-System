@@ -19,6 +19,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 
 $leave_reason = $leave_reason_err = "";
+$starting_date = $ending_date = "";
+$starting_date_err = $ending_date_err = "";
 $staff_id = trim($_SESSION['id']);
 
 
@@ -33,19 +35,37 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
 
-if(empty($leave_reason_err)){
+    if(empty($_POST['starting_date'])){
+        $starting_date_err = "You must enter the starting date of the leave";
+    }
+    else{
+        $starting_date = $_POST['starting_date'];
+    }
+
+    if(empty($_POST['ending_date'])){
+        $ending_date_err = "You must enter the ending date of the leave";
+    }
+    else{
+        $ending_date = $_POST['ending_date'];
+    }
+       
+
+
+if(empty($leave_reason_err) && empty($starting_date_err) && empty($ending_date_err)){
 
      // Prepare an insert statement
-     $sql = "INSERT INTO form (staff_id, reason, status) VALUES ($staff_id, ?, 'NOT DONE')";
+     $sql = "INSERT INTO form (staff_id, reason, status , starting_date, ending_date) VALUES ($staff_id, ?, 'NOT DONE', ?, ?)";
 
       
      if($stmt = mysqli_prepare($conn, $sql)){
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "s", $param_leave_reason);
+        mysqli_stmt_bind_param($stmt, "sss", $param_leave_reason, $param_starting_date, $param_ending_date);
         
         // Set parameters
         
         $param_leave_reason = $leave_reason;
+        $param_starting_date = $starting_date;
+        $param_ending_date = $ending_date;
         
         // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){
@@ -149,6 +169,20 @@ mysqli_close($conn);
                 <textarea name="leave_reason" class="form-control" placeholder = "Write your reason here"></textarea>
                 <span class="help-block"><?php echo $leave_reason_err; ?></span>
             </div>    
+
+
+            <div class="form-group <?php echo (!empty($starting_date_err)) ? 'has-error' : ''; ?>">
+                <label>Leave starting date</label>
+                <input type="date" name="starting_date" class="form-control" ></input>
+                <span class="help-block"><?php echo $starting_date_err; ?></span>
+            </div>   
+
+            <div class="form-group <?php echo (!empty($ending_date_err)) ? 'has-error' : ''; ?>">
+                <label>Leave ending date</label>
+                <input type="date" name="ending_date" class="form-control" ></input>
+                <span class="help-block"><?php echo $ending_date_err; ?></span>
+            </div> 
+
             
             <div class="form-group">
                 <input type="submit" class="btn btn-default" value="Submit">

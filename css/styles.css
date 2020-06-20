@@ -31,11 +31,14 @@ body{
 }
 
 .form h2{
-    color: #fff;
-    font-size: 28px;
+    color: black;
+    text-shadow: -1px 0 #2e86de, 0 1px #2e86de, 1px 0 #2e86de, 0 -1px #2e86de;
+    font-size: 25px;
     font-weight: 500;
     text-align: center;
     text-transform: uppercase;
+    margin-bottom: -20px;
+    
 }
 
 .username, .password{
@@ -116,5 +119,14 @@ span{
 
 p{
     color: red;
+}
+
+h3{
+    color: white;
+    margin: 0;
+    margin-top: 50px;
+    margin-bottom: -20px;
+    font-size: 25px;
+    font-weight: 500;
 }
 

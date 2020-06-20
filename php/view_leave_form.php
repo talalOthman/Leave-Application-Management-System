@@ -70,15 +70,18 @@
                     require_once "connect.php";
                     
                     // Attempt select query execution
-                    $sql = "SELECT form.id, form.reason, staff.username FROM form, staff WHERE form.staff_id = staff.id AND form.status = 'NOT DONE'";
+                    $sql = "SELECT form.id, form.reason, staff.username, form.starting_date, form.ending_date FROM form, staff WHERE form.staff_id = staff.id AND form.status = 'NOT DONE'";
                     if($result = mysqli_query($conn, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>#</th>";
-                                        echo "<th>Leave Reason</th>";
+                                        
+
                                         echo "<th>Staff Username</th>";
+                                        echo "<th>Leave Reason</th>";
+                                        echo "<th>Starting Date</th>";
+                                        echo "<th>Ending Date</th>";
                                         echo "<th>Action";
                                        
                                     echo "</tr>";
@@ -86,9 +89,12 @@
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['reason'] . "</td>";
+                                        
+                                        
                                         echo "<td>" . $row['username'] . "</td>";
+                                        echo "<td>" . $row['reason'] . "</td>";
+                                        echo "<td>" . $row['starting_date'] . "</td>";
+                                        echo "<td>" . $row['ending_date'] . "</td>";
                                         
                                         echo "<td>";
                                             echo "<a href='Approve_application.php?id=". $row['id'] ."' title='Approve Application' data-toggle='tooltip'><span class='glyphicon glyphicon-ok'></span></a>";

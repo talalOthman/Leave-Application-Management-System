@@ -145,7 +145,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <body>
 
     <form class="form" id="form" action="<?=$_SERVER['PHP_SELF'];?>" method="POST">
-        <h2>Login</h2>
+        <h2>Leave Application <br> Management System </h2>
+       
         <p>
         <?php 
         if(isset($_POST['login-submit'])){
