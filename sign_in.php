@@ -23,7 +23,9 @@ require_once "php/connect.php";
 // if the user entered after processing the form. this used to stop user from entering directly to the site by using the URL.
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-    $userLevel = trim($_POST["user"]); // the role the user chose
+    
+
+    $userLevel = ""; // the role the user chose
     $username = trim($_POST["username"]);
     $password = trim($_POST["password"]);
     $usernameError ="";
@@ -43,18 +45,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     // to check if the username and password have values.
     if(!empty($username) && !empty($password)){
-
+        
         //The sql query to  check for the username entered by the user.
-        $sql ="SELECT id, username, password, status FROM $userLevel WHERE username = ?;";
+        
+        $sql ="SELECT id, username, password, status, userType FROM admins WHERE username = ? 
+        UNION SELECT id, username, password, status, userType FROM manager WHERE username = ? 
+        UNION SELECT id, username, password, status, userType FROM staff WHERE username = ?;";
 
         //preparing the statement
         if($stmt = mysqli_prepare($conn, $sql)){
 
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
+            mysqli_stmt_bind_param($stmt, "sss", $param_username1, $param_username2, $param_username3);
 
             // Set parameters
-            $param_username = $username;
+            $param_username1 = $username;
+            $param_username2 = $username;
+            $param_username3 = $username;
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
@@ -66,7 +73,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 if(mysqli_stmt_num_rows($stmt) == 1){
 
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password, $status);
+                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password, $status, $userLevel);
 
                     if(mysqli_stmt_fetch($stmt)){
                         //comparing the password given with the hashed password in the database
@@ -93,7 +100,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             }
                             
                         } else{
-                            $passwordError = "The password you entered was fuck not valid.";
+                            $passwordError = "The password you entered was not valid.";
                         }
                     }
 
@@ -108,9 +115,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             mysqli_close($conn);
         }
     }
+
+
 }
-
-
 
 
 
@@ -166,23 +173,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             ?>
         </p>
         <br>
-        <label>
-            <input type = "radio" class="option" id="admin" name="user" value="admins">
-            <span>ADMIN</span>
-        </label>
-
-        <label>
-            <input  type = "radio" class="option" id="manager" name="user" value="manager">
-            <span>MANAGER</span>
-            
-        </label>
-
-        <label>
-            <input  type = "radio" class="option" id="staff" name="user" value="staff">
-            <span>STAFF</span>
-        </label>
-        <p id="mainError"></p>
-        <br>
+        
         
         <button class="login" name="login-submit">Login</button>
 

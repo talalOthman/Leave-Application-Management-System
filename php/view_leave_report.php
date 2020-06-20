@@ -46,9 +46,13 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Approved applications</h2>
+                        <h2 class="pull-left">Leaves taken by this staff</h2>
                         
-                        <a href ="admins.php" class ="btn btn-success"> Menu Page</a>
+                        <a href ="view_all_staff_application.php" class ="btn btn-success"> Back</a>
+                        <form method="POST">
+                        <input type = "submit" name="ASC" class="btn btn-primary" value="ASCENDING ORDER">
+                        <input type = "submit" name="DESC" class="btn btn-primary" value="DESCENDING ORDER">
+                        </form>
                         
                     </div>
                     <?php
@@ -61,16 +65,28 @@
                             exit;
                         }
 
-                    if($_SESSION['userlevel'] !== "staff"){
+                    
+
+                    if($_SESSION['userlevel'] === "staff"){
                         header("location: ../sign_in.php");
                         }
                     
 
                     // Include config file
                     require_once "connect.php";
-                    $staff_id = $_SESSION['id'];
+                    $staff_id = $_GET['id'];
+
+                    $order = "ASC";
+                    if(isset($_POST['DESC'])){
+                        $order = "DESC";
+                    }
+                    if(isset($_POST['ASC'])){
+                        $order = "ASC";
+                    }
+
+
                     // Attempt select query execution
-                    $sql = "SELECT form.id, form.reason, manager.username FROM form, manager WHERE form.manager_id = manager.id AND form.status = 'APPROVED' AND form.staff_id = $staff_id;";
+                    $sql = "SELECT form.id, form.reason, manager.username FROM form, manager WHERE form.manager_id = manager.id AND form.status = 'APPROVED' AND form.staff_id = $staff_id ORDER BY username $order ;";
                     if($result = mysqli_query($conn, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
@@ -90,7 +106,7 @@
                                     echo "<td>" . $row['reason'] . "</td>";
                                     echo "<td>" . $row['username'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='view_manager.php?id=". $row['id'] ."' title='View Manager' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='view_manager.php?id=". $row['id'] ."' title='not sure' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                             
                                         echo "</td>";
                                     echo "</tr>";
@@ -107,62 +123,6 @@
                     }
  
                     
-                    ?>
-
-
-                    <div class="page-header clearfix">
-                        <h2 class="pull-left">Declined applications</h2>
-                        
-                    </div>
-                    <?php
-
-                    
-                    
-
-                    
-                    
-
-                    // Include config file
-                    require_once "connect.php";
-                    
-                    // Attempt select query execution
-                    $sql = "SELECT form.id, form.reason, manager.username FROM form, manager WHERE form.manager_id = manager.id AND form.status = 'DECLINED' AND form.staff_id = $staff_id;";
-                    if($result = mysqli_query($conn, $sql)){
-                        if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered table-striped'>";
-                                echo "<thead>";
-                                    echo "<tr>";
-                                    echo "<th>#</th>";
-                                    echo "<th>Leave Reason</th>";
-                                    echo "<th>Manager Username</th>";
-                                    echo "<th>Action";
-                                    echo "</tr>";
-                                echo "</thead>";
-                                echo "<tbody>";
-                                while($row = mysqli_fetch_array($result)){
-                                    echo "<tr>";
-                                    echo "<td>" . $row['id'] . "</td>";
-                                    echo "<td>" . $row['reason'] . "</td>";
-                                    echo "<td>" . $row['username'] . "</td>";
-                                        echo "<td>";
-                                            echo "<a href='view_staff.php?id=". $row['id'] ."' title='View staff' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                        
-                                        echo "</td>";
-                                    echo "</tr>";
-                                }
-                                echo "</tbody>";                            
-                            echo "</table>";
-                            // Free result set
-                            mysqli_free_result($result);
-                        } else{
-                            echo "<p class='lead'><em>No records were found.</em></p>";
-                        }
-                    } else{
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($conn);
-                    }
- 
-                    // Close connection
-                    mysqli_close($conn);
                     ?>
 
                 </div>

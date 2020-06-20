@@ -49,6 +49,7 @@ if($_SESSION['userlevel'] !== "manager"){
         <a href="sign_out.php" class="btn btn-danger">Sign Out</a>
         <a href="update_manager_own.php" class="btn btn-primary">Update personal information</a>
         <a href="view_leave_form.php" class="btn btn-primary">View current leave application</a>
+        <a href="view_all_staff_application.php" class="btn btn-primary">View all staff applications</a>
     </p>
 </body>
 </html>
