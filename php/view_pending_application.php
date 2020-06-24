@@ -46,9 +46,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Leaves taken by this staff</h2>
+                        <h2 class="pull-left">Pending leave applications</h2>
                         
-                        <a href ="view_all_staff_application.php" class ="btn btn-success"> Back</a>
+                        <a href ="view_all_staff_application.php" class ="btn btn-success"> Menu Page</a>
                         <form method="POST">
                         <input type = "submit" name="ASC" class="btn btn-primary" value="ASCENDING ORDER">
                         <input type = "submit" name="DESC" class="btn btn-primary" value="DESCENDING ORDER">
@@ -67,14 +67,14 @@
 
                     
 
-                    if($_SESSION['userlevel'] === "staff"){
+                    if($_SESSION['userlevel'] === "manager"){
                         header("location: ../sign_in.php");
                         }
                     
 
                     // Include config file
                     require_once "connect.php";
-                    $staff_id = $_GET['id'];
+                    
 
                     $order = "ASC";
                     if(isset($_POST['DESC'])){
@@ -86,7 +86,7 @@
 
 
                     // Attempt select query execution
-                    $sql = "SELECT  form.reason, manager.username, form.starting_date, form.ending_date FROM form, manager WHERE form.manager_id = manager.id AND form.status = 'APPROVED' AND form.staff_id = $staff_id ORDER BY form.reason $order ;";
+                    $sql = "SELECT  form.reason, form.starting_date, form.id, form.ending_date FROM form, staff WHERE form.staff_id = staff.id AND form.status = 'NOT DONE' ORDER BY form.reason $order ;";
                     if($result = mysqli_query($conn, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
@@ -95,9 +95,9 @@
                                        
                                         
                                         echo "<th>Leave Reason</th>";
-                                        echo "<th>Manager Username</th>";
                                         echo "<th> Starting Date";
                                         echo "<th> Ending Date";
+                                        echo "<th> Action";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
@@ -105,9 +105,11 @@
                                     echo "<tr>";
                                     
                                     echo "<td>" . $row['reason'] . "</td>";
-                                    echo "<td>" . $row['username'] . "</td>";
                                     echo "<td>" . $row['starting_date'] . "</td>";
                                     echo "<td>" . $row['ending_date'] . "</td>";
+                                    echo "<td>";
+                                            echo "<a href='cancel_application.php?id=". $row['id'] ."' title='Cancel Application' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                        echo "</td>";
                                         
                                     echo "</tr>";
                                 }

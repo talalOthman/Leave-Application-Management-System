@@ -31,6 +31,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $usernameError ="";
     $passwordError = "";
     $inactiveError = "";
+    $applied_leave_num = "";
 
 
     
@@ -48,9 +49,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         
         //The sql query to  check for the username entered by the user.
         
-        $sql ="SELECT id, username, password, status, userType FROM admins WHERE username = ? 
-        UNION SELECT id, username, password, status, userType FROM manager WHERE username = ? 
-        UNION SELECT id, username, password, status, userType FROM staff WHERE username = ?;";
+        $sql ="SELECT id, username, password, status, userType, applied_leave_num FROM admins WHERE username = ? 
+        UNION SELECT id, username, password, status, userType, applied_leave_num FROM manager WHERE username = ? 
+        UNION SELECT id, username, password, status, userType, applied_leave_num FROM staff WHERE username = ?;";
 
         //preparing the statement
         if($stmt = mysqli_prepare($conn, $sql)){
@@ -73,7 +74,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 if(mysqli_stmt_num_rows($stmt) == 1){
 
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password, $status, $userLevel);
+                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password, $status, $userLevel, $applied_leave_num);
 
                     if(mysqli_stmt_fetch($stmt)){
                         //comparing the password given with the hashed password in the database
@@ -90,6 +91,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             // will store the username if the user
                             $_SESSION["username"] = $username; 
                             $_SESSION["password"] = $password;
+
+                            $_SESSION["applied_leave_num"] = $applied_leave_num;
 
                             // will direct the user to the page of what type of user they chose.
                             header("location: php/".$userLevel.".php");
@@ -114,6 +117,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             mysqli_close($conn);
         }
+
+        
+
+
+
+
+
     }
 
 
@@ -147,7 +157,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <form class="form" id="form" action="<?=$_SERVER['PHP_SELF'];?>" method="POST">
         <h2>Leave Application <br> Management System </h2>
        
-        <p>
+        <p class="deactive">
         <?php 
         if(isset($_POST['login-submit'])){
         echo $inactiveError;} 

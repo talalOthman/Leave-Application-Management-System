@@ -16,8 +16,8 @@ if($conn === false){
 
 
 
-/*
 
+/*
 $username = "Admin";
 $password = "admin123";
 $status = "ACTIVE";
@@ -25,12 +25,13 @@ $userType = "admins";
 
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-$sql = "INSERT INTO admins(username, password, status, userType) VALUES ('$username', '$hashed_password', '$status', '$userType');";
+$sql = "INSERT INTO admins(username, password, status, userType, applied_leave_num) VALUES ('$username', '$hashed_password', '$status', '$userType', 0);";
 
 if(mysqli_query($conn, $sql)){
     
 }
 */
+
 
 
 

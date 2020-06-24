@@ -17,7 +17,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
-
+$leave_taken = $_SESSION["applied_leave_num"];
+$leave_limit = 20;
+$leave_taken_err = "";
 $leave_reason = $leave_reason_err = "";
 $starting_date = $ending_date = "";
 $starting_date_err = $ending_date_err = "";
@@ -48,10 +50,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     else{
         $ending_date = $_POST['ending_date'];
     }
+
+    if($leave_taken >= 20){
+        $leave_taken_err = "You reached your annual limit";
+    }
+    else{
+        
+    }
        
 
 
-if(empty($leave_reason_err) && empty($starting_date_err) && empty($ending_date_err)){
+if(empty($leave_reason_err) && empty($starting_date_err) && empty($ending_date_err) && empty($leave_taken_err)){
 
      // Prepare an insert statement
      $sql = "INSERT INTO form (staff_id, reason, status , starting_date, ending_date) VALUES ($staff_id, ?, 'NOT DONE', ?, ?)";
@@ -82,10 +91,38 @@ if(empty($leave_reason_err) && empty($starting_date_err) && empty($ending_date_e
         // Close statement
         mysqli_stmt_close($stmt);
         }
-    }
+    
+
+    // Prepare an insert statement
+    $sql2 = "UPDATE staff SET applied_leave_num = ? WHERE id = $staff_id;";
+
+      
+    if($stmt2 = mysqli_prepare($conn, $sql2)){
+       // Bind variables to the prepared statement as parameters
+       mysqli_stmt_bind_param($stmt2, "i", $param_applied_leave_num);
+       
+       // Set parameters
+       
+      $param_applied_leave_num = $leave_taken;
+       
+       // Attempt to execute the prepared statement
+       if(mysqli_stmt_execute($stmt2)){
+           
+         $_SESSION["applied_leave_num"] = $leave_taken;
+           
+       } else{
+           echo "Something went wrong. Please try again later.";
+       }
+
+       // Close statement
+       mysqli_stmt_close($stmt2);
+       }
+
+
 
 // Close connection
 mysqli_close($conn);
+    }
 }
 
 ?>
@@ -106,15 +143,44 @@ mysqli_close($conn);
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         body{ font: 14px sans-serif; background-color: #2f323a;}
-        .wrapper{ 
-            width: 350px;
+        .wrapper, .box{ 
+            
              margin-left: 40%; 
-             margin-top: 6%; color: white; 
+             margin-top: 3%; color: white; 
              background-color: black; 
              padding: 30px; 
              border-radius: 10px; 
-             box-shadow: 0px 0px 20px 0px rgba(253, 253, 253, 0.75);
+             
             } 
+
+            .wrapper{
+                width: 350px;
+                box-shadow: 0px 0px 20px 0px rgba(253, 253, 253, 0.75);
+            }
+
+            .grid-container{
+                display: grid;
+                grid-gap : 20px;
+                width: 100px;
+                padding: 0;
+                margin: 0;
+                height: 100px;
+                margin-top: 10px;
+                margin-bottom: -30px;
+                margin-left: 37%;
+                
+            }
+
+            .box{
+                grid-row: 1;
+                width: 150px;
+                padding: 0;
+                text-align: center;
+            }
+
+            
+
+            
 
            
 
@@ -149,15 +215,40 @@ mysqli_close($conn);
             }
 
             
+
+            
+
+            
         
     </style>
 </head>
 <body>
+
+<div class="grid-container">
+    
+    <div class="box">
+    <h1><?php echo $leave_taken ?></h1>
+    <p>Leave taken</p>
+    </div>
+
+    <div class="box">
+    <h1><?php echo $leave_limit ?></h1>
+    <p>Annual Limit</p>
+    </div>
+
+    
+</div>
+
     <div class="wrapper">
+
+    <span class="help-block boxError"><?php echo $leave_taken_err; ?></span>
         <h2>Leave form</h2>
         <p>Please fill this form to apply for leave</p>
 
         <br>
+
+        
+
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
 

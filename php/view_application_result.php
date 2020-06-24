@@ -70,29 +70,30 @@
                     require_once "connect.php";
                     $staff_id = $_SESSION['id'];
                     // Attempt select query execution
-                    $sql = "SELECT form.id, form.reason, manager.username FROM form, manager WHERE form.manager_id = manager.id AND form.status = 'APPROVED' AND form.staff_id = $staff_id;";
+                    $sql = "SELECT form.id, form.reason, manager.username, form.starting_date, form.ending_date  FROM form, manager WHERE form.manager_id = manager.id AND form.status = 'APPROVED' AND form.staff_id = $staff_id;";
                     if($result = mysqli_query($conn, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                        
-                                        echo "<th>#</th>";
+                                        
                                         echo "<th>Leave Reason</th>";
                                         echo "<th>Manager Username</th>";
-                                        echo "<th>Action";
+                                        echo "<th>Starting Date</th>";
+                                        echo "<th>Ending Date</th>";
+                                        
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                    echo "<td>" . $row['id'] . "</td>";
+                                    
                                     echo "<td>" . $row['reason'] . "</td>";
                                     echo "<td>" . $row['username'] . "</td>";
-                                        echo "<td>";
-                                            echo "<a href='view_manager.php?id=". $row['id'] ."' title='View Manager' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            
-                                        echo "</td>";
+                                    echo "<td>" . $row['starting_date'] . "</td>";
+                                    echo "<td>" . $row['ending_date'] . "</td>";
+                                        
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            
@@ -126,28 +127,29 @@
                     require_once "connect.php";
                     
                     // Attempt select query execution
-                    $sql = "SELECT form.id, form.reason, manager.username FROM form, manager WHERE form.manager_id = manager.id AND form.status = 'DECLINED' AND form.staff_id = $staff_id;";
+                    $sql = "SELECT form.id, form.reason, manager.username, form.starting_date, form.ending_date FROM form, manager WHERE form.manager_id = manager.id AND form.status = 'DECLINED' AND form.staff_id = $staff_id;";
                     if($result = mysqli_query($conn, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                    echo "<th>#</th>";
+                                    
                                     echo "<th>Leave Reason</th>";
-                                    echo "<th>Manager Username</th>";
-                                    echo "<th>Action";
+                                        echo "<th>Manager Username</th>";
+                                        echo "<th>Starting Date</th>";
+                                        echo "<th>Ending Date</th>";
+                                    
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                    echo "<td>" . $row['id'] . "</td>";
+                                    
                                     echo "<td>" . $row['reason'] . "</td>";
                                     echo "<td>" . $row['username'] . "</td>";
-                                        echo "<td>";
-                                            echo "<a href='view_staff.php?id=". $row['id'] ."' title='View staff' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                    echo "<td>" . $row['starting_date'] . "</td>";
+                                    echo "<td>" . $row['ending_date'] . "</td>";
                                         
-                                        echo "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            

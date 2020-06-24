@@ -42,6 +42,27 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
      
     // Close statement
     mysqli_stmt_close($stmt);
+
+
+
+
+
+
+
+
+    
+    // to add the amount of leave taken by this user
+    $sql2 = "UPDATE form, staff SET staff.applied_leave_num = staff.applied_leave_num +1 WHERE form.staff_id = staff.id";
+    
+    
+     mysqli_query($conn, $sql2);
+
+
+
+
+
+
+    
     
     // Close connection
     mysqli_close($conn);
