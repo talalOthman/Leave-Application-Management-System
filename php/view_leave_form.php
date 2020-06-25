@@ -49,6 +49,10 @@
                         <h2 class="pull-left">Leave Applications</h2>
                         
                         <a href ="manager.php" class ="btn btn-success"> Menu Page</a>
+                        <form method="POST">
+                        <input type = "submit" name="ASC" class="btn btn-primary" value="ASCENDING ORDER">
+                        <input type = "submit" name="DESC" class="btn btn-primary" value="DESCENDING ORDER">
+                        </form>
                         
                     </div>
                     <?php
@@ -68,9 +72,18 @@
 
                     // Include config file
                     require_once "connect.php";
+                   
+
+                    $order = "ASC";
+                    if(isset($_POST['DESC'])){
+                        $order = "DESC";
+                    }
+                    if(isset($_POST['ASC'])){
+                        $order = "ASC";
+                    }
                     
                     // Attempt select query execution
-                    $sql = "SELECT form.id, form.reason, staff.username, form.starting_date, form.ending_date FROM form, staff WHERE form.staff_id = staff.id AND form.status = 'NOT DONE'";
+                    $sql = "SELECT form.id, form.reason, staff.username, form.starting_date, form.ending_date FROM form, staff WHERE form.staff_id = staff.id AND form.status = 'NOT DONE' ORDER BY form.starting_date $order";
                     if($result = mysqli_query($conn, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";

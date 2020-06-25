@@ -86,7 +86,7 @@
 
 
                     // Attempt select query execution
-                    $sql = "SELECT  form.reason, manager.username, form.starting_date, form.ending_date FROM form, manager WHERE form.manager_id = manager.id AND form.status = 'APPROVED' AND form.staff_id = $staff_id ORDER BY form.reason $order ;";
+                    $sql = "SELECT  form.reason, manager.username, form.starting_date, form.ending_date FROM form, manager WHERE form.manager_id = manager.id AND form.status = 'APPROVED' AND form.staff_id = $staff_id ORDER BY form.starting_date $order ;";
                     if($result = mysqli_query($conn, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
