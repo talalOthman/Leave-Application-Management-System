@@ -1,4 +1,3 @@
-
 <?php
 
 session_start();
@@ -147,18 +146,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leave Application Management</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Leave Application Management edited</title>
+    <!--Font awesome kit-->
+    <script src="https://kit.fontawesome.com/7887806c2e.js" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+
+    <!--Bootsrap 4 CDNs-->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/styles.css?ts=<?=time()?>" />
+    <!--This was added because the CSS was not updating as it was loading from browser cache-->
 </head>
 
 <body>
-
+    
     <form class="form" id="form" action="<?=$_SERVER['PHP_SELF'];?>" method="POST">
-        <h2>Leave Application <br> Management System </h2>
-       
+        <h2 class = "bolder"><b>Leave Application <br> Management System</b> </h2>
+        <br>
+        <i class="fas fa-address-card "></i>
+        
         <p class="deactive">
-        <?php 
+            <?php 
         if(isset($_POST['login-submit'])){
         echo $inactiveError;} 
         ?>
@@ -166,17 +175,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <br>
 
         <br>
-        
-        <input class="username" id = "username" type="text" name="username" placeholder="Username" value = <?php if(isset($_POST['login-submit'])){echo $username;}?>>
+        <input class="username" id="username" type="text" name="username" placeholder="Username" value=<?php if(isset($_POST['login-submit'])){echo $username;}?>>
         <p id="errmessage-username">
-        <?php 
+            <?php 
         if(isset($_POST['login-submit'])){
         echo $usernameError;} 
         ?>
         </p>
         <br>
-        
-        <input class="password" id = "password" type="password" name="password" placeholder="Password">
+
+        <input class="password" id="password" type="password" name="password" placeholder="Password">
         <p id="errmessage-password">
             <?php
             if(isset($_POST['login-submit'])){
@@ -184,13 +192,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             ?>
         </p>
         <br>
-        
-        
+
+
         <button class="login" name="login-submit">Login</button>
 
     </form>
 
     <script src="javascript/script.js"></script>
+    <!--Bootstrap 4 Things-->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </body>
 
 </html>

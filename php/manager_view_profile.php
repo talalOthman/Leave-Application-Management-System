@@ -1,13 +1,106 @@
-<?php session_start(); ?>
+<?php
+
+session_start();
+
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: ../sign_in.php");
+    exit;
+}
+
+if($_SESSION['userlevel'] !== "manager"){
+    header("location: ../sign_in.php");
+}
+
+// Include config file
+require_once "connect.php";
+ 
+// Define variables and initialize with empty values
+$new_username = $new_password= "";
+$username_err = $new_password_err = "";
+
+
+ 
+// Processing form data when form is submitted
+if(isset($_POST['id']) && !empty($_POST['id'])){
+    // Get hidden input value
+    $id = $_POST['id'];
+
+
+    
+   
+ 
+    
+    
+    
+    if(empty(trim($_POST['username']))){
+        $username_err = "Please enter the new username.";
+    } elseif(!filter_var($_POST['username'], FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z0-9\s]+$/")))){
+        $username_err = "Please enter a valid username.";
+    } else{
+        $_SESSION['username'] = $_POST['username'];
+    }
+
+
+
+        
+
+
+    
+    
+    
+    
+    // Check input errors before inserting in database
+    if(empty($username_err)){
+        // Prepare an update statement
+        $sql = "UPDATE staff SET username=? WHERE id=?";
+        
+        // Set parameters
+        $param_new_username = $_SESSION["username"];
+        $param_id = $_SESSION["id"];
+        
+         
+        if($stmt = mysqli_prepare($conn, $sql)){
+
+            
+
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "si", $param_new_username,  $param_id);
+            
+            
+            
+            // Attempt to execute the prepared statement
+
+            if(mysqli_stmt_execute($stmt)){
+                // Records updated successfully. Redirect to landing page
+                
+              header("location: staff.php");
+
+                exit();
+            } else{
+                header("location: .php");
+                echo "Something went wrong. Please try again later.";
+            }
+            
+        }
+
+         // Close statement
+        mysqli_stmt_close($stmt);
+        
+    }
+    
+    // Close connection
+    mysqli_close($conn);
+} 
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <title>Update Record</title>
     <!--Font awesome kit-->
     <script src="https://kit.fontawesome.com/7887806c2e.js" crossorigin="anonymous"></script>
     <!-- Font Awesome JS -->
@@ -23,35 +116,15 @@
     <link rel="stylesheet" type="text/css" href="../css/stylesB.css?ts=<?=time()?>" />
     <!--This was added because the CSS was not updating as it was loading from browser cache-->
     <style type="text/css">
-    
-    
 
-        table tr td:last-child a {
-            margin-right: 15px;
 
-        }
-
-        a.btn {
-            margin-left: 10px;
-        }
-
-   
-        body {
-            font: 15px sans-serif;
-            background-color: #2f323a;
-        }
 
 
     </style>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-
-    </script>
 </head>
 
 <body>
+
     <!--    Navbar begins-->
     <!-- Bootstrap NavBar -->
     <!-- Bootstrap NavBar -->
@@ -157,87 +230,88 @@
 
 
         <div class="col">
-            <div class="container-fluid">
+
+            <div class="container text-white rounded mt-3 pt-3 " id="editform">
+                <h1>My Profile</h1>
+                <hr>
                 <div class="row">
-                    <div class="col-md-12">
-                            <h2 class="pull-left display-4 text-white mr-5">Staff details</h2>
+                    <!-- left column -->
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
+                        </div>
+                    </div>
 
-                            <form method="POST">
-                                <input type="submit" name="ASC" class="btn btn-info mt-3" value="ASCENDING ORDER">
-                                <input type="submit" name="DESC" class="btn btn-danger mt-3 ml-5" value="DESCENDING ORDER">
-                            </form>
+                    <!-- edit form column -->
+                    <div class="col-md-8 personal-info">
+                        <div class="alert alert-info alert-dismissable">
+                            <a class="panel-close close" data-dismiss="alert">×</a>
+                            <i class="fa fa-coffee"></i>
+                            This is an <strong>.alert</strong>. Use this to show important messages to the user.
+                        </div>
+                        <h3>Personal info</h3>
 
-
-                        
-                        <?php
-
-                    // Check if the user is logged in, if not then redirect him to login page
-                    if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-                            header("location: ../sign_in.php");
-                            exit;
-                        }
-
-                    if($_SESSION['userlevel'] !== "manager"){
-                        header("location: ../sign_in.php");
-                        }
-                    
-
-                    // Include config file
-                    require_once "connect.php";
-
-                    
-                    
-                    $order = "ASC";
-                    if(isset($_POST['DESC'])){
-                        $order = "DESC";
-                    }
-                    if(isset($_POST['ASC'])){
-                        $order = "ASC";
-                    }
-
-                    // Attempt select query execution
-                    $sql = "SELECT * FROM staff ORDER BY username $order";
-                    if($result = mysqli_query($conn, $sql)){
-                        if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered table-striped table-dark'>";
-                                echo "<thead>";
-                                    echo "<tr>";
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">First name:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="text" value="Jane" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label ">Last name:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="text" value="Bishop" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Departemnt:</label>
+                                
+                                    <div class="col-lg-8">
+                                            <input class="form-control " type="text" value="Finance" readonly>
                                         
-                                        echo "<th>Username</th>";
-                                       
-                                        
-                                        echo "<th>Action</th>";
-                                    echo "</tr>";
-                                echo "</thead>";
-                                echo "<tbody>";
-                                while($row = mysqli_fetch_array($result)){
-                                    echo "<tr>";
-                                    
-                                        echo "<td>" . $row['username'] . "</td>";
-                                        
-                                        
-                                        echo "<td>";
-                                            echo "<a href='view_leave_report.php?id=". $row['id'] ."' title='View leave report ' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                        echo "</td>";
-                                    echo "</tr>";
-                                }
-                                echo "</tbody>";                            
-                            echo "</table>";
-                            // Free result set
+                                    </div>
                             
-                        } else{
-                            echo "<p class='lead'><em>No records were found.</em></p>";
-                        }
-                    } else{
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($conn);
-                    }
- 
-                    
-                    ?>
+                            
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Manager:</label>
+                                <div class="col-md-8">
+                                    <input class="form-control " type="text" value="Emmanuel Hurley" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Username:</label>
+                                    <div class="col-md-8">
+                                        <input class="form-control" type="text" value="janeuser" readonly>
+                                    </div>
+                                </div>
 
+                        </form>
                     </div>
                 </div>
             </div>
+            <hr>
+            <!--            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="page-header">
+                            <h2>Update Record</h2>
+                        </div>
+                        <p>Please edit the input values and submit to update the record.</p>
+                        <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
+                            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                                <label>Username</label>
+                                <input type="text" name="username" class="form-control" value="<?php echo $_SESSION['username']; ?>">
+                                <span class="help-block"><?php echo $username_err;?></span>
+                            </div>
+
+
+                            <input type="hidden" name="id" value=<?php echo $_SESSION["id"]; ?>>
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                            <a href="staff.php" class="btn btn-default">Cancel</a>
+                        </form>
+                    </div>
+                </div>
+            </div> -->
         </div>
     </div>
     <!--Row end-->
@@ -250,6 +324,8 @@
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="../javascript/script.js"></script>
+    </div>
+    </div>
 </body>
 
 </html>

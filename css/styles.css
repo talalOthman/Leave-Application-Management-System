@@ -2,49 +2,70 @@ html {
     box-sizing: border-box;
 }
 
-*, *::before, *::after{
+*,
+*::before,
+*::after {
     box-sizing: inherit;
 }
 
-body{
-    margin: 0;
+body {
+    background: url('http://www.baltana.com/files/wallpapers-7/Material-Design-HD-Desktop-Wallpaper-23164.png') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+  -o-background-size: cover;
+   /* margin: 0;
     padding: 0;
     height: 100vh;
-    background-color: #2f323a;
+    background-color:#2f323a;
     background-size: cover;
+    */
 }
 
-.form{
-    background-color: #03070A;
+.form {
+    background-color: #47717a;
     z-index: 1;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 500px;
-    padding: 0 1px 30px 1px;
+    padding: 30px 1px 30px 1px;
     text-align: center;
-    border-radius: 10px;
+    border-radius: 5px;
     opacity: 0.9;
     font-family: sans-serif;
     box-shadow: 0px 0px 20px 0px rgba(253, 253, 253, 0.75);
+    backdrop-filter : blur("10px");
+    
+    
+    
 }
 
-.form h2{
-    color: black;
-    text-shadow: -1px 0 #2e86de, 0 1px #2e86de, 1px 0 #2e86de, 0 -1px #2e86de;
-    font-size: 25px;
-    font-weight: 500;
+.form h2 {
+    font-family:"Roboto" ;
+    color:white ;
+    
+    font-size: 35px;
     text-align: center;
     text-transform: uppercase;
     margin-bottom: -15px;
     
+
 }
 
-.username, .password{
+.fa-address-card{
+    color: 	#4dda47;
+    font-size: 10rem;
+    
+    
+}
+.username,
+.password {
     color: white;
     outline: 0;
-    background: none;
+    background: 	rgba(128, 128, 128,1.0) ;
+    opacity: 2.0;
     font-size: 15px;
     text-align: center;
     width: 265px;
@@ -54,20 +75,27 @@ body{
     border-radius: 25px;
     transition: 0.5s;
     transition-property: width;
-    
+
+}
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: whitesmoke;
+  opacity: 1; /* Firefox */
 }
 
-.password:hover, .password:focus, .username:hover, .username:focus{
+.password:hover,
+.password:focus,
+.username:hover,
+.username:focus {
     width: 300px;
-    
+
 }
 
 
 
-.login{
+.login {
     outline: 0;
-    background: none;
-    color: #fff;
+    background: #10ac84;
+    color: #ffffff;
     font-size: 14px;
     text-transform: uppercase;
     width: 150px;
@@ -77,21 +105,29 @@ body{
     cursor: pointer;
     transition: 0.5s;
     transition-property: background, transform;
+    backdrop-filter: blur(0px);
+    opacity: 1.8;
+    
 }
 
+.div {
+    font-family: "Roboto";
+}
 
-
-.login:hover, .login:active, .login:focus{
+.login:hover,
+.login:active,
+.login:focus {
     background: #10ac84;
     transform: scale(1.1);
+    opacity: 1.0;
 }
 
 
-.option{
+.option {
     display: none;
 }
 
-.option:checked ~ span{
+.option:checked~span {
     color: white;
     background-color: #2e86de;
     transform: scale(1.1);
@@ -99,29 +135,14 @@ body{
 
 
 
-span{
-    position: relative;
-    display: inline-block;
-    margin: 20px 10px;
-    padding: 12px;
-    width: 100px;
-    background: #000;
-    border: 2.5px solid #2e86de;
-    color: white;
-    border-radius: 25px;
-    cursor: pointer;
-    margin-bottom: 10px;
-    margin-top: 0px;
-    font-weight: 100;
-    
-}
 
 
-p{
+
+p {
     color: red;
 }
 
-h3{
+h3 {
     color: white;
     margin: 0;
     margin-top: 50px;
@@ -130,8 +151,74 @@ h3{
     font-weight: 500;
 }
 
-.deactive{
+.deactive {
     margin: 0;
     margin-top: 20px;
     margin-bottom: -20px;
 }
+
+/*Navbar CSS Begins*/
+#body-row {
+    margin-left:0;
+    margin-right:0;
+}
+#sidebar-container {
+    min-height: 100vh;   
+    background-color: #333;
+    padding: 0;
+}
+
+/* Sidebar sizes when expanded and expanded */
+.sidebar-expanded {
+    width: 230px;
+}
+.sidebar-collapsed {
+    width: 60px;
+}
+
+/* Menu item*/
+#sidebar-container .list-group a {
+    height: 50px;
+    color: white;
+}
+
+/* Submenu item*/
+#sidebar-container .list-group .sidebar-submenu a {
+    height: 45px;
+    padding-left: 30px;
+}
+.sidebar-submenu {
+    font-size: 0.9rem;
+}
+
+/* Separators */
+.sidebar-separator-title {
+    background-color: #333;
+    height: 35px;
+}
+.sidebar-separator {
+    background-color: #333;
+    height: 25px;
+}
+.logo-separator {
+    background-color: #333;    
+    height: 60px;
+}
+
+/* Closed submenu icon */
+#sidebar-container .list-group .list-group-item[aria-expanded="false"] .submenu-icon::after {
+  content: " \f0d7";
+  font-family: FontAwesome;
+  display: inline;
+  text-align: right;
+  padding-left: 10px;
+}
+/* Opened submenu icon */
+#sidebar-container .list-group .list-group-item[aria-expanded="true"] .submenu-icon::after {
+  content: " \f0da";
+  font-family: FontAwesome;
+  display: inline;
+  text-align: right;
+  padding-left: 10px;
+}
+/*Navbar CSS ends*/

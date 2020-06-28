@@ -8,7 +8,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
-if($_SESSION['userlevel'] !== "manager"){
+if($_SESSION['userlevel'] !== "staff"){
     header("location: ../sign_in.php");
 }
 
@@ -124,7 +124,7 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
 </head>
 
 <body>
-          <!--    Navbar begins-->
+    <!--    Navbar begins-->
     <!-- Bootstrap NavBar -->
     <!-- Bootstrap NavBar -->
     <nav class="navbar navbar-expand-md navbar-dark ">
@@ -144,16 +144,19 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
                     <div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
                         <!-- <li class=" nav-item d-sm-block d-md-none"> to hide from bigger screens -->
                 <li class=" nav-item d-sm-block d-md-none">
-                    <a href="manager_view_profile.php" class="nav-link btn ">View Profile</a>
+                    <a href="staff_view_profile.php" class="nav-link btn ">View Profile</a>
                 </li>
                 <li class=" nav-item d-sm-block d-md-none">
-                    <a href="update_manager_own.php" class="nav-link btn ">Edit Profile</a>
+                    <a href="update_staff_own.php" class="nav-link btn ">Edit Profile</a>
                 </li>
                 <li class=" nav-item d-sm-block d-md-none">
-                    <a href="view_leave_form.php" class="nav-link btn">View Pending Applications</a>
+                    <a href="staff_leave_apply.php" class="nav-link btn">Apply for leave</a>
                 </li>
                 <li class=" nav-item d-sm-block d-md-none">
-                    <a href="view_all_staff_application.php" class="nav-link btn">View All Application</a>
+                    <a href="view_application_result.php" class="nav-link btn">View application results</a>
+                </li>
+                <li class=" nav-item d-sm-block d-md-none">
+                    <a href="view_pending_application.php" class="nav-link btn">View pending applications</a>
                 </li>
                 <li class="nav-item active">
                     <a href="sign_out.php" class="nav-link btn btn-danger">Sign Out</a>
@@ -193,10 +196,10 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
                 </a>
                 <!-- Submenu content -->
                 <div id='submenu2' class="collapse sidebar-submenu">
-                    <a href="manager_view_profile.php" class="list-group-item list-group-item-action bg-dark text-white">
+                    <a href="staff_view_profile.php" class="list-group-item list-group-item-action bg-dark text-white">
                         <span class="menu-collapsed">View Profile</span>
                     </a>
-                    <a href="update_manager_own.php" class="list-group-item list-group-item-action bg-dark text-white">
+                    <a href="update_staff_own.php" class="list-group-item list-group-item-action bg-dark text-white">
                         <span class="menu-collapsed">Edit Profile</span>
                     </a>
                 </div>
@@ -206,16 +209,22 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
                     <small>APPLICATION OPTIONS</small>
                 </li>
                 <!-- /END Separator -->
-                <a href="view_leave_form.php" class="bg-dark list-group-item list-group-item-action">
+                <a href="staff_leave_apply.php" class="bg-dark list-group-item list-group-item-action">
                     <div class="d-flex w-100 justify-content-start align-items-center">
                         <span class="fa fa-tasks fa-fw mr-3"></span>
-                        <span class="menu-collapsed">View Pending Applications</span>
+                        <span class="menu-collapsed">Apply for Leave</span>
                     </div>
                 </a>
-                <a href="view_all_staff_application.php" class="bg-dark list-group-item list-group-item-action">
+                <a href="view_application_result.php" class="bg-dark list-group-item list-group-item-action">
                     <div class="d-flex w-100 justify-content-start align-items-center">
                         <span class="fa fa-tasks fa-fw mr-3"></span>
-                        <span class="menu-collapsed">View All Applications</span>
+                        <span class="menu-collapsed">Application results</span>
+                    </div>
+                </a>
+                <a href="view_pending_application.php" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fa fa-tasks fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Pending applications</span>
                     </div>
                 </a>
                 <!-- Separator without title -->
@@ -225,6 +234,7 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
         </div><!-- sidebar-container END -->
         <!--    navbar ends-->
 
+
         <!-- Main Section-->
 
 
@@ -232,16 +242,13 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
         <div class="col">
 
             <div class="container text-white rounded mt-3 pt-3 " id="editform">
-                <h1>Edit Profile</h1>
+                <h1>My Profile</h1>
                 <hr>
                 <div class="row">
                     <!-- left column -->
                     <div class="col-md-4">
                         <div class="text-center">
                             <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
-                            <h6>Upload a different photo...</h6>
-
-                            <input type="file" class="form-control">
                         </div>
                     </div>
 
@@ -258,60 +265,36 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
                             <div class="form-group">
                                 <label class="col-lg-3 control-label">First name:</label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" type="text" value="Jane">
+                                    <input class="form-control" type="text" value="Jane" readonly>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">Last name:</label>
+                                <label class="col-lg-3 control-label ">Last name:</label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" type="text" value="Bishop">
+                                    <input class="form-control" type="text" value="Bishop" readonly>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-lg-3 control-label">Departemnt:</label>
-                                <div class="col-lg-8">
-
-                                    <div class="ui-select">
-                                        <select id="user_time_zone" class="form-control">
-                                            <option value="Finance" selected="selected">Finance</option>
-                                            <option value="Sales">Sales</option>
-                                            <option value="Marketing">Marketing</option>
-                                        </select>
+                                
+                                    <div class="col-lg-8">
+                                            <input class="form-control " type="text" value="Finance" readonly>
+                                        
                                     </div>
-
-                                </div>
-                            </div>
+                            
+                            
                             <div class="form-group">
                                 <label class="col-md-3 control-label">Manager:</label>
                                 <div class="col-md-8">
-                                    <input class="form-control " type="text" value="Emmanuel Hurley">
+                                    <input class="form-control " type="text" value="Emmanuel Hurley" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Username:</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" type="text" value="janeuser">
+                                        <input class="form-control" type="text" value="janeuser" readonly>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Password:</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" type="password" value="11111122333">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Confirm password:</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" type="password" value="11111122333">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label"></label>
-                                    <div class="col-md-8">
-                                        <input type="button" class="btn btn-primary" value="Save Changes">
-                                        <span></span>
-                                        <input type="reset" class="btn btn-danger" value="Cancel">
-                                    </div>
-                                </div>
+
                         </form>
                     </div>
                 </div>
@@ -351,6 +334,7 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="../javascript/script.js"></script>
+    </div>
     </div>
 </body>
 
