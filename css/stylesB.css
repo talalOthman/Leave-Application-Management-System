@@ -1,6 +1,6 @@
 
 body {
-    background: url('http://www.baltana.com/files/wallpapers-7/Material-Design-HD-Desktop-Wallpaper-23164.png') no-repeat center center fixed;
+    background: url("../images/background-image.png") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
