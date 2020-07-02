@@ -157,7 +157,7 @@ mysqli_close($conn);
     <!--This was added because the CSS was not updating as it was loading from browser cache-->
     <style type="text/css">
         body {
-            font: 14px "Roboto";
+            font:  "Roboto";
             background-color: #2f323a;
         }
 

@@ -1,11 +1,11 @@
 <?php session_start();?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
     <title>Pending Applications</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+
 
     <!--Font awesome kit-->
     <script src="https://kit.fontawesome.com/7887806c2e.js" crossorigin="anonymous"></script>

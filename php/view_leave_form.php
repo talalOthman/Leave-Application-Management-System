@@ -75,7 +75,7 @@
                 <li class=" nav-item d-sm-block d-md-none">
                     <a href="update_manager_own.php" class="nav-link btn ">Edit Profile</a>
                 </li>
-                <li class=" nav-item d-sm-block d-md-none">
+                <li class=" nav-item d-sm-block d-md-none pb-3 mb-3">
                     <a href="view_leave_form.php" class="nav-link btn">View Pending Applications</a>
                 </li>
                 <li class=" nav-item d-sm-block d-md-none">

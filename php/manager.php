@@ -36,30 +36,7 @@ if($_SESSION['userlevel'] !== "manager"){
 
     <link rel="stylesheet" type="text/css" href="../css/stylesB.css?ts=<?=time()?>" />
     <!--This was added because the CSS was not updating as it was loading from browser cache-->
-    <style type="text/css">
-        body {
-            font: 14px sans-serif;
-            text-align: center;
-        }
 
-        body {
-            font: 14px sans-serif;
-            background-color: #2f323a;
-            color: white;
-        }
-
-        .wrapper {
-            width: 350px;
-            margin-left: 40%;
-            margin-top: 6%;
-            color: white;
-            background-color: black;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 20px 0px rgba(253, 253, 253, 0.75);
-        }
-
-    </style>
 </head>
 
 <body>
@@ -145,7 +122,7 @@ if($_SESSION['userlevel'] !== "manager"){
                     <small>APPLICATION OPTIONS</small>
                 </li>
                 <!-- /END Separator -->
-                <a href="view_leave_form.php" class="bg-dark list-group-item list-group-item-action">
+                <a href="view_leave_form.php" class="bg-dark list-group-item list-group-item-action pb-3 mb-3">
                     <div class="d-flex w-100 justify-content-start align-items-center">
                         <span class="fa fa-tasks fa-fw mr-3"></span>
                         <span class="menu-collapsed">View Pending Applications</span>

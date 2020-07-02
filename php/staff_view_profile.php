@@ -177,16 +177,22 @@ if($stmt = mysqli_prepare($conn, $sql)){
                     <small>APPLICATION OPTIONS</small>
                 </li>
                 <!-- /END Separator -->
-                <a href="view_leave_form.php" class="bg-dark list-group-item list-group-item-action">
+                <a href="staff_leave_apply.php" class="bg-dark list-group-item list-group-item-action">
                     <div class="d-flex w-100 justify-content-start align-items-center">
                         <span class="fa fa-tasks fa-fw mr-3"></span>
-                        <span class="menu-collapsed">View Pending Applications</span>
+                        <span class="menu-collapsed">Apply for Leave</span>
                     </div>
                 </a>
-                <a href="view_all_staff_application.php" class="bg-dark list-group-item list-group-item-action">
+                <a href="view_application_result.php" class="bg-dark list-group-item list-group-item-action">
                     <div class="d-flex w-100 justify-content-start align-items-center">
                         <span class="fa fa-tasks fa-fw mr-3"></span>
-                        <span class="menu-collapsed">View All Applications</span>
+                        <span class="menu-collapsed">Application results</span>
+                    </div>
+                </a>
+                <a href="view_pending_application.php" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fa fa-tasks fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Pending applications</span>
                     </div>
                 </a>
                 <!-- Separator without title -->
