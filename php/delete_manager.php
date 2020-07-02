@@ -62,12 +62,13 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     <meta charset="UTF-8">
     <title>View Record</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <style rel="stylesheet" href="../css/stylesB.css"></style>
     <style type="text/css">
         .wrapper{
             width: 500px;
             margin: 0 auto;
         }
-        body{ font: 14px sans-serif; background-color: #2f323a;}
+        body{ font: 14px sans-serif; background-color: #47717a;;}
         .wrapper{ 
             width: 350px;
              margin-left: 40%; 
@@ -78,6 +79,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
              box-shadow: 0px 0px 20px 0px rgba(253, 253, 253, 0.75);
             } 
     </style>
+    
 </head>
 <body>
     <div class="wrapper">

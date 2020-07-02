@@ -213,7 +213,7 @@
                                         
                                         
                                         echo "<td>";
-                                            echo "<a href='view_leave_report.php?id=". $row['id'] ."' title='View leave report ' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='view_leave_report.php?id=". $row['id'] ."' title='View leave report ' data-toggle='tooltip'><i class='fas fa-eye'></i></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
