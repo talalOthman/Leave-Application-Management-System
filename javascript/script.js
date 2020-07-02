@@ -65,9 +65,9 @@ function SidebarCollapse () {
     $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
 }
 
-<script type="text/javascript">
+
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();   
         });
-    </script>
-    </script>
+  
+    

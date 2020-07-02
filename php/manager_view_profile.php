@@ -15,83 +15,53 @@ if($_SESSION['userlevel'] !== "manager"){
 // Include config file
 require_once "connect.php";
  
-// Define variables and initialize with empty values
-$new_username = $new_password= "";
-$username_err = $new_password_err = "";
+$id = $_SESSION['id'];
 
 
- 
-// Processing form data when form is submitted
-if(isset($_POST['id']) && !empty($_POST['id'])){
-    // Get hidden input value
-    $id = $_POST['id'];
+
+$sql = "SELECT managerinfo.Firstname, managerinfo.Lastname, manager.username FROM managerinfo, manager WHERE manager.id = ? AND managerinfo.manager_id = manager.id";
 
 
-    
-   
- 
-    
-    
-    
-    if(empty(trim($_POST['username']))){
-        $username_err = "Please enter the new username.";
-    } elseif(!filter_var($_POST['username'], FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z0-9\s]+$/")))){
-        $username_err = "Please enter a valid username.";
+
+//preparing the statement
+if($stmt = mysqli_prepare($conn, $sql)){
+
+    // Bind variables to the prepared statement as parameters
+    mysqli_stmt_bind_param($stmt, "i", $param_id);
+
+    // Set parameters
+    $param_id = $id;
+
+    // Attempt to execute the prepared statement
+    if(mysqli_stmt_execute($stmt)){
+        
+        // Store result
+        mysqli_stmt_store_result($stmt);
+
+        
+
+            // Bind result variables
+            mysqli_stmt_bind_result($stmt, $firstname, $lastname, $username);
+
+            mysqli_stmt_fetch($stmt);
+
+        
     } else{
-        $_SESSION['username'] = $_POST['username'];
-    }
-
-
-
-        
-
-
-    
-    
-    
-    
-    // Check input errors before inserting in database
-    if(empty($username_err)){
-        // Prepare an update statement
-        $sql = "UPDATE staff SET username=? WHERE id=?";
-        
-        // Set parameters
-        $param_new_username = $_SESSION["username"];
-        $param_id = $_SESSION["id"];
-        
-         
-        if($stmt = mysqli_prepare($conn, $sql)){
-
-            
-
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "si", $param_new_username,  $param_id);
-            
-            
-            
-            // Attempt to execute the prepared statement
-
-            if(mysqli_stmt_execute($stmt)){
-                // Records updated successfully. Redirect to landing page
-                
-              header("location: staff.php");
-
-                exit();
-            } else{
-                header("location: .php");
-                echo "Something went wrong. Please try again later.";
-            }
-            
-        }
-
-         // Close statement
-        mysqli_stmt_close($stmt);
-        
+        echo "Something went wrong!";
     }
     
-    // Close connection
+
     mysqli_close($conn);
-} 
+}
+
+
+
+
+
+
+
+ 
+
 
 ?>
 
@@ -100,7 +70,7 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
 
 <head>
     <meta charset="UTF-8">
-    <title>Update Record</title>
+    <title>View Profile</title>
     <!--Font awesome kit-->
     <script src="https://kit.fontawesome.com/7887806c2e.js" crossorigin="anonymous"></script>
     <!-- Font Awesome JS -->
@@ -255,33 +225,23 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
                             <div class="form-group">
                                 <label class="col-lg-3 control-label">First name:</label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" type="text" value="Jane" readonly>
+                                    <input class="form-control" type="text" value="<?php echo $firstname; ?>" readonly>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-lg-3 control-label ">Last name:</label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" type="text" value="Bishop" readonly>
+                                    <input class="form-control" type="text" value="<?php echo $lastname; ?>" readonly>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">Departemnt:</label>
-                                
-                                    <div class="col-lg-8">
-                                            <input class="form-control " type="text" value="Finance" readonly>
-                                        
-                                    </div>
                             
                             
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">Manager:</label>
-                                <div class="col-md-8">
-                                    <input class="form-control " type="text" value="Emmanuel Hurley" readonly>
-                                </div>
+                            
+                            
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Username:</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" type="text" value="janeuser" readonly>
+                                        <input class="form-control" type="text" value="<?php echo $username ?>" readonly>
                                     </div>
                                 </div>
 

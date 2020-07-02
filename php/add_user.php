@@ -19,11 +19,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
  
 // Define variables and initialize with empty values
-$username = $password = $confirm_password = $chosenUser = "";
+$username = $firstname = $lastname = $password = $confirm_password = $chosenUser = "";
 
 $chosenUserError = "";
 
-$username_err = $password_err = $confirm_password_err = "";
+$id = random_int(1, 1000000); // this will be the manager and staff ids
+
+
+
+$username_err = $firstname_err = $lastname_err = $password_err = $confirm_password_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -35,7 +39,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
  
     // Validate username
-    if(empty(trim($_POST["username"]))){
+    if(empty(trim($_POST["new_username"]))){
         $username_err = "Please enter a username.";
     } else{
         // Prepare a select statement
@@ -47,8 +51,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             mysqli_stmt_bind_param($stmt, "ss", $param_username1, $param_username2);
             
             // Set parameters
-            $param_username1 = trim($_POST["username"]);
-            $param_username2 = trim($_POST["username"]);
+            $param_username1 = trim($_POST["new_username"]);
+            $param_username2 = trim($_POST["new_username"]);
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
@@ -58,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 if(mysqli_stmt_num_rows($stmt) == 1){
                     $username_err = "This username is already taken.";
                 } else{
-                    $username = trim($_POST["username"]);
+                    $username = trim($_POST["new_username"]);
                 }
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
@@ -70,30 +74,42 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     // Validate password
-    if(empty(trim($_POST["password"]))){
+    if(empty(trim($_POST["new_password"]))){
         $password_err = "Please enter a password.";     
-    } elseif(strlen(trim($_POST["password"])) < 6){
+    } elseif(strlen(trim($_POST["new_password"])) < 6){
         $password_err = "Password must have atleast 6 characters.";
     } else{
-        $password = trim($_POST["password"]);
+        $password = trim($_POST["new_password"]);
     }
     
     // Validate confirm password
-    if(empty(trim($_POST["confirm_password"]))){
+    if(empty(trim($_POST["confirm_new_password"]))){
         $confirm_password_err = "Please confirm password.";     
     } else{
-        $confirm_password = trim($_POST["confirm_password"]);
+        $confirm_password = trim($_POST["confirm_new_password"]);
         if(empty($password_err) && ($password != $confirm_password)){
             $confirm_password_err = "Password did not match.";
         }
     }
+
+    if(empty(trim($_POST["firstname"]))){
+        $firstname_err = "Please enter your first name";
+    }else{
+        $firstname = $_POST["firstname"];
+    }
+
+    if(empty(trim($_POST["lastname"]))){
+        $lastname_err = "Please enter your last name";
+    }else{
+        $lastname = $_POST["lastname"];
+    }
     
     // Check input errors before inserting in database
-    if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
+    if(empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($firstname_err) && empty($lastname_err)){
         
         
         // Prepare an insert statement
-        $sql = "INSERT INTO $chosenUser (username, password, status, userType, applied_leave_num) VALUES (?, ?, 'ACTIVE', '$chosenUser', 0)";
+        $sql = "INSERT INTO $chosenUser (id, username, password, status, userType, applied_leave_num) VALUES ( '$id',?, ?, 'ACTIVE', '$chosenUser', 0)";
          
         if($stmt = mysqli_prepare($conn, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -105,10 +121,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                // Redirect to login page
+                
                 echo '<div class="alert alert-success" role="alert">
                 User added!
               </div>';
+              
               
                 
             } else{
@@ -118,6 +135,76 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Close statement
             mysqli_stmt_close($stmt);
         }
+
+        
+        
+        
+        
+       
+
+
+
+
+        
+        
+
+        
+
+        // will add the firstname and lastname in a seperate table
+
+        if($chosenUser === "staff"){
+            // Prepare an insert statement
+        $sql2 = "INSERT INTO staffinfo (staff_id, Firstname, Lastname) VALUES ($id, ?, ?)";
+         
+        if($stmt2 = mysqli_prepare($conn, $sql2)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt2, "ss",  $param_firstname, $param_lastname);
+            
+            // Set parameters
+            $param_firstname = $firstname;
+            $param_lastname = $lastname;
+            
+            
+            
+            // Attempt to execute the prepared statement
+            if(mysqli_stmt_execute($stmt2)){
+
+                
+
+            }else{
+             header("location admins.php");
+            }
+                
+
+            // Close statement
+            mysqli_stmt_close($stmt2);
+        }
+        }elseif($chosenUser === "manager"){
+            // Prepare an insert statement
+        $sql2 = "INSERT INTO managerinfo (Firstname, Lastname, manager_id) VALUES (?, ?, $id)";
+         
+        if($stmt2 = mysqli_prepare($conn, $sql2)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt2, "ss", $param_firstname, $param_lastname);
+            
+            // Set parameters
+            $param_firstname = $firstname;
+            $param_lastname = $lastname;
+            
+            
+            // Attempt to execute the prepared statement
+           if(mysqli_stmt_execute($stmt2)){
+               
+           }else{
+            header("location admins.php");
+           }
+                
+
+            // Close statement
+            mysqli_stmt_close($stmt2);
+        }
+        }
+
     }
     
     // Close connection
@@ -153,7 +240,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <style type="text/css">
         .option:checked~.spann {
             color: white;
-            background-color: #47717a;
+            background-color: #2e86de;
             transform: scale(1.1);
         }
 
@@ -176,6 +263,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         input {
             display: none;
+            width: 100px;
+        }
+
+        .fix{
+            width: 120px;
+            padding: 10px;
+            margin: 5px;
         }
 
     </style>
@@ -286,16 +380,37 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         <!-- Main Section-->
 
-        <div class="col">
-            <div class="wrapper mt-5">
-                <h2 class="display-3 text-white">Add Users</h2>
-                <p>Please fill this form to add a user</p>
+         <div class="col">
 
-                <br>
+            <div class="container text-white rounded mt-3 pt-3 " id="editform">
+                <h1>Add User</h1>
+                <hr>
+                <div class="row">
+                    <!-- left column -->
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
+                            <h6>Upload a different photo...</h6>
 
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                            <input type="file" class="form-control">
+                        </div>
+                    </div>
 
-                    <div class="form-group <?php echo (!empty($chosenUserError)) ? 'has-error' : ''; ?>">
+                    <!-- edit form column -->
+                    <div class="col-md-8 personal-info">
+                        <div class="alert alert-info alert-dismissable">
+                            <a class="panel-close close" data-dismiss="alert">×</a>
+                            <i class="fa fa-coffee"></i>
+                            This is an <strong>.alert</strong>. Use this to show important messages to the user.
+                        </div>
+                        
+
+                        <form class="form-horizontal" role="form" action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
+
+
+
+
+                        <div class="form-group <?php echo (!empty($chosenUserError)) ? 'has-error' : ''; ?>">
                         <label>
                             <input type="radio" class="option" id="manager" name="user" value="manager">
                             <span class="spann">MANAGER</span>
@@ -306,31 +421,65 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <input type="radio" class="option" id="staff" name="user" value="staff">
                             <span class="spann">STAFF</span>
                         </label>
+                        <br>
                         <span class="help-block"><?php echo $chosenUserError; ?></span>
                     </div>
 
 
 
-                    <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                        <label>Username</label>
-                        <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                        <span class="help-block"><?php echo $username_err; ?></span>
-                    </div>
-                    <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                        <label>Password</label>
-                        <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
-                        <span class="help-block"><?php echo $password_err; ?></span>
-                    </div>
-                    <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-                        <label>Confirm Password</label>
-                        <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
-                        <span class="help-block"><?php echo $confirm_password_err; ?></span>
-                    </div>
 
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-primary mr-4" value="Submit">
-                        <input type="reset" class="btn btn-danger" value="Reset">
+
+                            <div class="form-group <?php echo (!empty($firstname_err)) ? 'has-error' : ''; ?>">
+                                <label class="col-lg-3 control-label">First name:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="text" name ="firstname" >
+                                    <span class="help-block"><?php echo $firstname_err;?></span>
+                                </div>
+                            </div>
+                            <div class="form-group <?php echo (!empty($lastname_err)) ? 'has-error' : ''; ?>">
+                                <label class="col-lg-3 control-label">Last name:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="text" name ="lastname"  >
+                                    <span class="help-block"><?php echo $lastname_err;?></span>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                                <label class="col-lg-3 control-label">Username:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="text" name ="new_username" >
+                                    <span class="help-block"><?php echo $username_err;?></span>
+                                </div>
+                            </div>
+                            <div class="form-group <?php echo (!empty($new_password_err)) ? 'has-error' : ''; ?>">
+                                <label class="col-lg-3 control-label">New password:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="password" name ="new_password" >
+                                    <span class="help-block"><?php echo $password_err;?></span>
+                                </div>
+                            </div>
+                            <div class="form-group <?php echo (!empty($confirm_new_password_err)) ? 'has-error' : ''; ?>">
+                                <label class="col-lg-4 control-label">Confirm new password:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="password" name ="confirm_new_password" >
+                                    <span class="help-block"><?php echo $confirm_password_err;?></span>
+                                </div>
+                            </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"></label>
+                                    <div class="col-md-8">
+
+                                        <input type="hidden" name="id" value=<?php echo $_SESSION["id"]; ?>>    
+                                        <input type="submit" class="btn btn-primary fix" value="Save Changes">
+                                        <span></span>
+                                        <input type="reset" class="btn btn-danger fix" value="Cancel">
+                                    </div>
+                                </div>
+                        </form>
                     </div>
+                </div>
+            </div>
 
 
 

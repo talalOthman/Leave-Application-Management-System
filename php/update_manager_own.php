@@ -16,8 +16,60 @@ if($_SESSION['userlevel'] !== "manager"){
 require_once "connect.php";
  
 // Define variables and initialize with empty values
-$new_username = $new_password= "";
-$username_err = $new_password_err = "";
+$new_username = $new_firstname = $new_lastname = $new_password = $confirm_new_password = "";
+$username_err = $new_password_err = $confirm_new_password_err= $firstname_err = $lastname_err = "";
+
+
+
+
+
+
+   // to get the current values of "firstname" and "lastname"
+
+   $sql5 = "SELECT managerinfo.Firstname, managerinfo.Lastname, manager.username FROM managerinfo, manager WHERE manager.id = ? AND manager.id = managerinfo.manager_id";
+
+
+
+   //preparing the statement
+   if($stmt5 = mysqli_prepare($conn, $sql5)){
+   
+       // Bind variables to the prepared statement as parameters
+       mysqli_stmt_bind_param($stmt5, "i", $param_id);
+   
+       // Set parameters
+       $param_id = $_SESSION['id'];
+   
+       // Attempt to execute the prepared statement
+       if(mysqli_stmt_execute($stmt5)){
+           
+           // Store result
+           mysqli_stmt_store_result($stmt5);
+   
+           
+   
+               // Bind result variables
+               mysqli_stmt_bind_result($stmt5, $firstname, $lastname, $new_username);
+               
+   
+               mysqli_stmt_fetch($stmt5);
+
+               $_SESSION['firstname'] = $firstname;
+               $_SESSION['lastname'] = $lastname;
+   
+           
+       } else{
+           echo "Something went wrong!";
+       }
+       
+       mysqli_stmt_close($stmt5);
+      
+   }
+
+
+
+
+
+
 
 
  
@@ -26,6 +78,17 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
     // Get hidden input value
     $id = $_POST['id'];
 
+    
+    $_SESSION['firstname'] = $_POST['firstname'];
+    $_SESSION['lastname'] = $_POST['lastname'];
+
+
+
+
+ 
+
+
+
 
     
    
@@ -33,12 +96,64 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
     
     
     
-    if(empty(trim($_POST['username']))){
+    if(empty(trim($_POST['new_username']))){
         $username_err = "Please enter the new username.";
-    } elseif(!filter_var($_POST['username'], FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z0-9\s]+$/")))){
+    } elseif(!filter_var($_POST['new_username'], FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z0-9\s]+$/")))){
         $username_err = "Please enter a valid username.";
     } else{
-        $_SESSION['username'] = $_POST['username'];
+        // Prepare a select statement
+        $sql7 = "SELECT id FROM manager WHERE username = ? AND NOT id = ?";
+        
+        
+        if($stmt7 = mysqli_prepare($conn, $sql7)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt7, "si", $param_username1, $temp_param_id);
+            
+            // Set parameters
+            $param_username1 = trim($_POST["new_username"]);
+            $temp_param_id = $_SESSION['id'];
+           
+            
+            // Attempt to execute the prepared statement
+            if(mysqli_stmt_execute($stmt7)){
+                /* store result */
+                mysqli_stmt_store_result($stmt7);
+
+                
+                
+                if(mysqli_stmt_num_rows($stmt7) == 1){
+                    $username_err = "This username is already taken.";
+                } else{
+                    $new_username = trim($_POST["new_username"]);
+                    $_SESSION['username'] = trim($_POST["new_username"]);
+                }
+            } else{
+                echo "Oops! Something went wrong. Please try again later.";
+            }
+
+            // Close statement
+            mysqli_stmt_close($stmt7);
+        }
+    }
+
+
+     // Validate password
+     if(empty(trim($_POST["new_password"]))){
+        $new_password_err = "Please enter a password.";     
+    } elseif(strlen(trim($_POST["new_password"])) < 6){
+        $new_password_err = "Password must have atleast 6 characters.";
+    } else{
+        $new_password = trim($_POST["new_password"]);
+    }
+    
+    // Validate confirm password
+    if(empty(trim($_POST["confirm_new_password"]))){
+        $confirm_new_password_err = "Please confirm password.";     
+    } else{
+        $confirm_new_password = trim($_POST["confirm_new_password"]);
+        if(empty($new_password_err) && ($new_password != $confirm_new_password)){
+            $confirm_new_password_err = "Password did not match.";
+        }
     }
 
 
@@ -51,12 +166,13 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
     
     
     // Check input errors before inserting in database
-    if(empty($username_err)){
+    if(empty($username_err) && empty($firstname_err) && empty($lastname_err) && empty($new_password_err) && empty($confirm_new_password_err)){
         // Prepare an update statement
-        $sql = "UPDATE staff SET username=? WHERE id=?";
+        $sql = "UPDATE manager SET username=?, password = ? WHERE id=?";
         
         // Set parameters
-        $param_new_username = $_SESSION["username"];
+        $param_new_username = $_SESSION['username'];
+        $param_new_password = password_hash($new_password, PASSWORD_DEFAULT);
         $param_id = $_SESSION["id"];
         
          
@@ -65,20 +181,61 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
             
 
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "si", $param_new_username,  $param_id);
+            mysqli_stmt_bind_param($stmt, "ssi", $param_new_username, $param_new_password, $param_id);
             
             
             
             // Attempt to execute the prepared statement
 
             if(mysqli_stmt_execute($stmt)){
-                // Records updated successfully. Redirect to landing page
-                
-              header("location: staff.php");
 
-                exit();
+        
+
+
+        //update firstname and lastname values
+        $sql6 = "UPDATE managerinfo SET Firstname = ?, Lastname = ? WHERE manager_id = ?";
+        
+        // Set parameters
+        
+        $param_firstname = $_POST['firstname'];
+        $param_lastname = $_POST['lastname'];
+        $param2_id = $_SESSION["id"];
+
+        //updating the sessions
+        
+
+         
+        if($stmt6 = mysqli_prepare($conn, $sql6)){
+
+            
+
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt6, "ssi", $param_firstname, $param_lastname, $param2_id);
+            
+            
+            
+            // Attempt to execute the prepared statement
+
+            if(mysqli_stmt_execute($stmt6)){
+
+                
+                echo '<div class="alert alert-success" role="alert">
+                Successfully updated !
+              </div>';
+              
+                
             } else{
-                header("location: .php");
+                header("location: manager.php");
+                echo "Something went wrong. Please try again later.";
+            }
+            
+        }
+
+         // Close statement
+        mysqli_stmt_close($stmt6);
+                
+            } else{
+                header("location: manager.php");
                 echo "Something went wrong. Please try again later.";
             }
             
@@ -254,60 +411,50 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
                         </div>
                         <h3>Personal info</h3>
 
-                        <form class="form-horizontal" role="form">
-                            <div class="form-group">
+                        <form class="form-horizontal" role="form" action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
+                            <div class="form-group <?php echo (!empty($firstname_err)) ? 'has-error' : ''; ?>">
                                 <label class="col-lg-3 control-label">First name:</label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" type="text" value="Jane">
+                                    <input class="form-control" type="text" name ="firstname" value = "<?php echo $_SESSION['firstname']; ?>">
+                                    <span class="help-block"><?php echo $firstname_err;?></span>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group <?php echo (!empty($lastname_err)) ? 'has-error' : ''; ?>">
                                 <label class="col-lg-3 control-label">Last name:</label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" type="text" value="Bishop">
+                                    <input class="form-control" type="text" name ="lastname" value = "<?php echo $_SESSION['lastname']; ?>" >
+                                    <span class="help-block"><?php echo $lastname_err;?></span>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">Departemnt:</label>
+                            
+                            
+                            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                                <label class="col-lg-3 control-label">Username:</label>
                                 <div class="col-lg-8">
-
-                                    <div class="ui-select">
-                                        <select id="user_time_zone" class="form-control">
-                                            <option value="Finance" selected="selected">Finance</option>
-                                            <option value="Sales">Sales</option>
-                                            <option value="Marketing">Marketing</option>
-                                        </select>
-                                    </div>
-
+                                    <input class="form-control" type="text" name ="new_username" value = "<?php echo $_SESSION['username']; ?>">
+                                    <span class="help-block"><?php echo $username_err;?></span>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">Manager:</label>
-                                <div class="col-md-8">
-                                    <input class="form-control " type="text" value="Emmanuel Hurley">
+                            <div class="form-group <?php echo (!empty($new_password_err)) ? 'has-error' : ''; ?>">
+                                <label class="col-lg-3 control-label">New password:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="password" name ="new_password" >
+                                    <span class="help-block"><?php echo $new_password_err;?></span>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Username:</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" type="text" value="janeuser">
-                                    </div>
+                            </div>
+                            <div class="form-group <?php echo (!empty($confirm_new_password_err)) ? 'has-error' : ''; ?>">
+                                <label class="col-lg-4 control-label">Confirm new password:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="password" name ="confirm_new_password" >
+                                    <span class="help-block"><?php echo $confirm_new_password_err;?></span>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Password:</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" type="password" value="11111122333">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Confirm password:</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" type="password" value="11111122333">
-                                    </div>
-                                </div>
+                            </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label"></label>
                                     <div class="col-md-8">
-                                        <input type="button" class="btn btn-primary" value="Save Changes">
+
+                                        <input type="hidden" name="id" value=<?php echo $_SESSION["id"]; ?>>    
+                                        <input type="submit" class="btn btn-primary" value="Save Changes">
                                         <span></span>
                                         <input type="reset" class="btn btn-danger" value="Cancel">
                                     </div>

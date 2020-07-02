@@ -93,7 +93,7 @@ if($_SESSION['userlevel'] !== "admins"){
                 </li>
                 <!-- /END Separator -->
                 <!-- Menu with submenu -->
-                <a class="bg-dark list-group-item list-group-item-action flex-column align-items-start" href="staff.php">
+                <a class="bg-dark list-group-item list-group-item-action flex-column align-items-start" href="admins.php">
                     <div class="d-flex w-100 justify-content-start align-items-center">
                         <span class="fas fa-tachometer-alt fa-fw mr-3"></span>
                         <span class="menu-collapsed">Home</span>

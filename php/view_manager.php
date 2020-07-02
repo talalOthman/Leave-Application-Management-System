@@ -40,7 +40,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                 // Retrieve individual field value
                 $username = $row["username"];
                 $status = $row["status"];
-                $salary = $row["password"];
+                
             } else{
                 // URL doesn't contain valid id parameter. Redirect to error page
                 header("location: error.php");
@@ -54,6 +54,68 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
      
     // Close statement
     mysqli_stmt_close($stmt);
+
+
+
+
+
+
+
+
+    //to get firstname and lastname from the database
+
+    $sql2 = "SELECT managerinfo.Firstname, managerinfo.Lastname FROM managerinfo, manager WHERE managerinfo.manager_id = ? AND managerinfo.manager_id = manager.id";
+
+
+
+//preparing the statement
+if($stmt2 = mysqli_prepare($conn, $sql2)){
+
+    // Bind variables to the prepared statement as parameters
+    mysqli_stmt_bind_param($stmt2, "i", $param_id);
+
+    // Set parameters
+    $param_id = $_GET["id"];
+
+    // Attempt to execute the prepared statement
+    if(mysqli_stmt_execute($stmt2)){
+        
+        // Store result
+        mysqli_stmt_store_result($stmt2);
+
+        
+
+            // Bind result variables
+            mysqli_stmt_bind_result($stmt2, $firstname, $lastname);
+
+            mysqli_stmt_fetch($stmt2);
+
+        
+    } else{
+        echo "Something went wrong!";
+    }
+    
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     // Close connection
     mysqli_close($conn);
@@ -191,91 +253,62 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
         <!-- Main Section-->
         <div class="col">
 
-            <div class="container text-white rounded mt-3 pt-3 " id="editform">
-                <h1>Edit Profile</h1>
-                <hr>
-                <div class="row">
-                    <!-- left column -->
-                    <div class="col-md-4">
-                        <div class="text-center">
-                            <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
-                            <h6>Upload a different photo...</h6>
+<div class="container text-white rounded mt-3 pt-3 " id="editform">
+    <h1>My Profile</h1>
+    <hr>
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-4">
+            <div class="text-center">
+                <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
+            </div>
+        </div>
 
-                            <input type="file" class="form-control">
-                        </div>
-                    </div>
+        <!-- edit form column -->
+        <div class="col-md-8 personal-info">
+            <div class="alert alert-info alert-dismissable">
+                <a class="panel-close close" data-dismiss="alert">×</a>
+                <i class="fa fa-coffee"></i>
+                This is an <strong>.alert</strong>. Use this to show important messages to the user.
+            </div>
+            <h3>Personal info</h3>
 
-                    <!-- edit form column -->
-                    <div class="col-md-8 personal-info">
-                        <div class="alert alert-info alert-dismissable">
-                            <a class="panel-close close" data-dismiss="alert">×</a>
-                            <i class="fa fa-coffee"></i>
-                            This is an <strong>.alert</strong>. Use this to show important messages to the user.
-                        </div>
-                        <h3>Personal info</h3>
-
-                        <form class="form-horizontal" role="form">
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">First name:</label>
-                                <div class="col-lg-8">
-                                    <input class="form-control" type="text" value="Jane">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">Last name:</label>
-                                <div class="col-lg-8">
-                                    <input class="form-control" type="text" value="Bishop">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">Departemnt:</label>
-                                <div class="col-lg-8">
-
-                                    <div class="ui-select">
-                                        <select id="user_time_zone" class="form-control">
-                                            <option value="Finance" selected="selected">Finance</option>
-                                            <option value="Sales">Sales</option>
-                                            <option value="Marketing">Marketing</option>
-                                        </select>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">Manager:</label>
-                                <div class="col-md-8">
-                                    <input class="form-control " type="text" value="Emmanuel Hurley">
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Username:</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" type="text" value="janeuser">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Password:</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" type="password" value="11111122333">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Confirm password:</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" type="password" value="11111122333">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label"></label>
-                                    <div class="col-md-8">
-                                        <input type="button" class="btn btn-primary" value="Save Changes">
-                                        <span></span>
-                                        <input type="reset" class="btn btn-danger" value="Cancel">
-                                    </div>
-                                </div>
-                        </form>
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">First name:</label>
+                    <div class="col-lg-8">
+                        <input class="form-control" type="text" value="<?php echo $firstname; ?>" readonly>
                     </div>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label ">Last name:</label>
+                    <div class="col-lg-8">
+                        <input class="form-control" type="text" value="<?php echo $lastname; ?>" readonly>
+                    </div>
+                </div>
+                
+                
+                
+                
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Username:</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" value="<?php echo $username ?>" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Account status:</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" value="<?php echo $status ?>" readonly>
+                        </div>
+                    </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
             <hr>
             <!--            <div class="container-fluid">
                 <div class="row">

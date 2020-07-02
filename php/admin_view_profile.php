@@ -15,83 +15,53 @@ if($_SESSION['userlevel'] !== "admins"){
 // Include config file
 require_once "connect.php";
  
-// Define variables and initialize with empty values
-$new_username = $new_password= "";
-$username_err = $new_password_err = "";
+$id = $_SESSION['id'];
 
 
- 
-// Processing form data when form is submitted
-if(isset($_POST['id']) && !empty($_POST['id'])){
-    // Get hidden input value
-    $id = $_POST['id'];
+
+$sql = "SELECT username FROM admins WHERE id = ?";
 
 
-    
-   
- 
-    
-    
-    
-    if(empty(trim($_POST['username']))){
-        $username_err = "Please enter the new username.";
-    } elseif(!filter_var($_POST['username'], FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z0-9\s]+$/")))){
-        $username_err = "Please enter a valid username.";
+
+//preparing the statement
+if($stmt = mysqli_prepare($conn, $sql)){
+
+    // Bind variables to the prepared statement as parameters
+    mysqli_stmt_bind_param($stmt, "i", $param_id);
+
+    // Set parameters
+    $param_id = $id;
+
+    // Attempt to execute the prepared statement
+    if(mysqli_stmt_execute($stmt)){
+        
+        // Store result
+        mysqli_stmt_store_result($stmt);
+
+        
+
+            // Bind result variables
+            mysqli_stmt_bind_result($stmt, $username);
+
+            mysqli_stmt_fetch($stmt);
+
+        
     } else{
-        $_SESSION['username'] = $_POST['username'];
-    }
-
-
-
-        
-
-
-    
-    
-    
-    
-    // Check input errors before inserting in database
-    if(empty($username_err)){
-        // Prepare an update statement
-        $sql = "UPDATE staff SET username=? WHERE id=?";
-        
-        // Set parameters
-        $param_new_username = $_SESSION["username"];
-        $param_id = $_SESSION["id"];
-        
-         
-        if($stmt = mysqli_prepare($conn, $sql)){
-
-            
-
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "si", $param_new_username,  $param_id);
-            
-            
-            
-            // Attempt to execute the prepared statement
-
-            if(mysqli_stmt_execute($stmt)){
-                // Records updated successfully. Redirect to landing page
-                
-              header("location: staff.php");
-
-                exit();
-            } else{
-                header("location: .php");
-                echo "Something went wrong. Please try again later.";
-            }
-            
-        }
-
-         // Close statement
-        mysqli_stmt_close($stmt);
-        
+        echo "Something went wrong!";
     }
     
-    // Close connection
+
     mysqli_close($conn);
-} 
+}
+
+
+
+
+
+
+
+ 
+
 
 ?>
 
@@ -124,8 +94,7 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
 </head>
 
 <body>
-
-    <!--    Navbar begins-->
+ <!--    Navbar begins-->
     <!-- Bootstrap NavBar -->
     <!-- Bootstrap NavBar -->
     <nav class="navbar navbar-expand-md navbar-dark ">
@@ -145,16 +114,16 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
                     <div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
                         <!-- <li class=" nav-item d-sm-block d-md-none"> to hide from bigger screens -->
                 <li class=" nav-item d-sm-block d-md-none">
-                    <a href="manager_view_profile.php" class="nav-link btn ">View Profile</a>
+                    <a href="admin_view_profile.php" class="nav-link btn ">View Profile</a>
                 </li>
                 <li class=" nav-item d-sm-block d-md-none">
-                    <a href="update_manager_own.php" class="nav-link btn ">Edit Profile</a>
+                    <a href="update_admin.php" class="nav-link btn ">Edit Profile</a>
                 </li>
                 <li class=" nav-item d-sm-block d-md-none">
-                    <a href="view_leave_form.php" class="nav-link btn">View Pending Applications</a>
+                    <a href="add_user.php" class="nav-link btn">Add User</a>
                 </li>
                 <li class=" nav-item d-sm-block d-md-none">
-                    <a href="view_all_staff_application.php" class="nav-link btn">View All Application</a>
+                    <a href="users_details.php" class="nav-link btn">User Details</a>
                 </li>
                 <li class="nav-item active">
                     <a href="sign_out.php" class="nav-link btn btn-danger">Sign Out</a>
@@ -194,10 +163,10 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
                 </a>
                 <!-- Submenu content -->
                 <div id='submenu2' class="collapse sidebar-submenu">
-                    <a href="manager_view_profile.php" class="list-group-item list-group-item-action bg-dark text-white">
+                    <a href="admin_view_profile.php" class="list-group-item list-group-item-action bg-dark text-white">
                         <span class="menu-collapsed">View Profile</span>
                     </a>
-                    <a href="update_manager_own.php" class="list-group-item list-group-item-action bg-dark text-white">
+                    <a href="update_admin.php" class="list-group-item list-group-item-action bg-dark text-white">
                         <span class="menu-collapsed">Edit Profile</span>
                     </a>
                 </div>
@@ -207,16 +176,16 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
                     <small>APPLICATION OPTIONS</small>
                 </li>
                 <!-- /END Separator -->
-                <a href="view_leave_form.php" class="bg-dark list-group-item list-group-item-action">
+                <a href="add_user.php" class="bg-dark list-group-item list-group-item-action">
                     <div class="d-flex w-100 justify-content-start align-items-center">
                         <span class="fa fa-tasks fa-fw mr-3"></span>
-                        <span class="menu-collapsed">View Pending Applications</span>
+                        <span class="menu-collapsed">Add User</span>
                     </div>
                 </a>
-                <a href="view_all_staff_application.php" class="bg-dark list-group-item list-group-item-action">
+                <a href="users_details.php" class="bg-dark list-group-item list-group-item-action">
                     <div class="d-flex w-100 justify-content-start align-items-center">
                         <span class="fa fa-tasks fa-fw mr-3"></span>
-                        <span class="menu-collapsed">View All Applications</span>
+                        <span class="menu-collapsed">User Details</span>
                     </div>
                 </a>
                 <!-- Separator without title -->
@@ -225,6 +194,8 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
             </ul><!-- List Group END-->
         </div><!-- sidebar-container END -->
         <!--    navbar ends-->
+
+        <!-- Main Section-->
 
         <!-- Main Section-->
 
@@ -251,37 +222,16 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
                         </div>
                         <h3>Personal info</h3>
 
-                        <form class="form-horizontal" role="form">
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">First name:</label>
-                                <div class="col-lg-8">
-                                    <input class="form-control" type="text" value="Jane" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label ">Last name:</label>
-                                <div class="col-lg-8">
-                                    <input class="form-control" type="text" value="Bishop" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">Departemnt:</label>
-                                
-                                    <div class="col-lg-8">
-                                            <input class="form-control " type="text" value="Finance" readonly>
-                                        
-                                    </div>
+                        
                             
                             
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">Manager:</label>
-                                <div class="col-md-8">
-                                    <input class="form-control " type="text" value="Emmanuel Hurley" readonly>
-                                </div>
+                            
+                            
+                            
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Username:</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" type="text" value="janeuser" readonly>
+                                        <input class="form-control" type="text" value="<?php echo $username ?>" readonly>
                                     </div>
                                 </div>
 
