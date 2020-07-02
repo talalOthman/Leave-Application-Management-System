@@ -186,6 +186,9 @@
 
                     // Include config file
                     require_once "connect.php";
+
+
+                    $id = $_SESSION["id"];
                     
 
                     $order = "ASC";
@@ -198,7 +201,7 @@
 
 
                     // Attempt select query execution
-                    $sql = "SELECT  form.reason, form.starting_date, form.id, form.ending_date FROM form, staff WHERE form.staff_id = staff.id AND form.status = 'NOT DONE' ORDER BY form.starting_date $order ;";
+                    $sql = "SELECT  form.reason, form.starting_date, form.id, form.ending_date FROM form, staff WHERE form.staff_id = staff.id AND form.status = 'NOT DONE' AND staff.id = $id ORDER BY form.starting_date $order ;";
                     if($result = mysqli_query($conn, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-dark table-striped'>";
