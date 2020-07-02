@@ -40,7 +40,7 @@ if($_SESSION['userlevel'] !== "manager"){
 </head>
 
 <body>
-       <!--    Navbar begins-->
+    <!--    Navbar begins-->
     <!-- Bootstrap NavBar -->
     <!-- Bootstrap NavBar -->
     <nav class="navbar navbar-expand-md navbar-dark ">
@@ -142,12 +142,23 @@ if($_SESSION['userlevel'] !== "manager"){
         <!--    navbar ends-->
 
         <!-- Main Section-->
+        <div class="col">
+            <div class="row">
+                <div class="container col-sm-6">
+                    These are two resizable columns. Put your charts here
+                </div>
+
+                <div class="container col-sm-6">
+                    These are two resizable columns. Put your charts here
+                </div>
+
+            </div>
+        </div>
 
 
 
-        
-
-    </div><!--Row end-->
+    </div>
+    <!--Row end-->
     <!--Bootstrap 4 Things-->
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

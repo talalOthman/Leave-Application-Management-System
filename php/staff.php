@@ -58,7 +58,7 @@ if($_SESSION['userlevel'] !== "staff"){
                 <li class="nav-item dropdown d-sm-block d-md-none">
                     <div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
                         <!-- <li class=" nav-item d-sm-block d-md-none"> to hide from bigger screens -->
-               <li class=" nav-item d-sm-block d-md-none">
+                <li class=" nav-item d-sm-block d-md-none">
                     <a href="staff_view_profile.php" class="nav-link btn ">View Profile</a>
                 </li>
                 <li class=" nav-item d-sm-block d-md-none">
@@ -148,25 +148,36 @@ if($_SESSION['userlevel'] !== "staff"){
             </ul><!-- List Group END-->
         </div><!-- sidebar-container END -->
         <!--    navbar ends-->
-        
-        
+
+
         <!-- Main Section-->
-        
-        
+        <div class="col">
+            <div class="row">
+                <div class="container col-sm-6">
+                    These are two resizable columns. Put your charts here
+                </div>
+
+                <div class="container col-sm-6">
+                    These are two resizable columns. Put your charts here
+                </div>
+
+            </div>
         </div>
+
+    </div>
     <!--Row end-->
-    
 
-        <!--Bootstrap 4 Things-->
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <!--Bootstrap 4 Things-->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-        <script src="../javascript/script.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="../javascript/script.js"></script>
+
 </body>
 
 </html>

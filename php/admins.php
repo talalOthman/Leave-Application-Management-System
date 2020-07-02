@@ -141,8 +141,22 @@ if($_SESSION['userlevel'] !== "admins"){
             </ul><!-- List Group END-->
         </div><!-- sidebar-container END -->
         <!--    navbar ends-->
-
+        
         <!-- Main Section-->
+        <div class="col">
+            <div class="row">
+                <div class="container col-sm-6">
+                    These are two resizable columns. Put your charts here
+                </div>
+                
+                <div class="container col-sm-6">
+                    These are two resizable columns. Put your charts here
+                </div>
+                
+            </div>
+        </div>
+
+        
 
     </div>
     <!--Row end-->
