@@ -79,14 +79,23 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
     $id = $_POST['id'];
 
     
-    $_SESSION['firstname'] = $_POST['firstname'];
+    
     $_SESSION['lastname'] = $_POST['lastname'];
 
 
 
+    if(empty(trim($_POST['firstname']))){
+        $firstname_err = "Please enter the new firstname.";
+    } else{
+        $_SESSION['firstname'] = $_POST['firstname'];
+    }
+    
 
- 
-
+    if(empty(trim($_POST['lastname']))){
+        $lastname_err = "Please enter the new lastname.";
+    } else{
+        $_SESSION['lastname'] = $_POST['lastname'];
+    }
 
 
 

@@ -108,3 +108,16 @@ fa-address-card{
 .help-block{
     color: red;
 }
+
+.fa-plus-circle{
+    color: green;
+}
+
+
+@media (max-height: 800px){
+    canvas{
+        height: 200px;
+        width: 200px;
+    }
+}
+

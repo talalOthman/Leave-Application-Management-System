@@ -193,7 +193,8 @@
                                         echo "<td>";
                                             echo "<a href='view_manager.php?id=". $row['id'] ."' title='View Manager' data-toggle='tooltip'><i class='fas fa-eye'></i></a>";
                                             echo "<a href='update_manager.php?id=". $row['id'] ."' title='Update Manager' data-toggle='tooltip'><i class='fas fa-wrench'></i></a>";
-                                            echo "<a href='delete_manager.php?id=". $row['id'] ."' title='De-Activate Manager' data-toggle='tooltip'><i class='fas fa-minus-circle'></i></a>";
+                                            echo "<a href='delete_manager.php?id=". $row['id'] ."' title='Re-Activate Manager' data-toggle='tooltip'><i class='fas fa-minus-circle'></i></a>";
+                                            echo "<a href='re-activate_manager.php?id=". $row['id'] ."' title='Re-Activate staff' data-toggle='tooltip'><i class='fa fa-plus-circle'></i></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
@@ -255,6 +256,7 @@
                                             echo "<a href='view_staff.php?id=". $row['id'] ."' title='View staff' data-toggle='tooltip'><i class='fas fa-eye'></i></a>";
                                             echo "<a href='update_staff.php?id=". $row['id'] ."' title='Update staff' data-toggle='tooltip'><i class='fas fa-wrench'></i></a>";
                                             echo "<a href='delete_staff.php?id=". $row['id'] ."' title='De-Activate staff' data-toggle='tooltip'><i class='fas fa-minus-circle'></i></a>";
+                                            echo "<a href='re-activate_staff.php?id=". $row['id'] ."' title='De-Activate staff' data-toggle='tooltip'><i class='fa fa-plus-circle'></i></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
