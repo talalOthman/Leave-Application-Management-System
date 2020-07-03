@@ -1,6 +1,8 @@
 <?php
 
 session_start();
+
+require_once "connect.php";
  
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
@@ -11,6 +13,24 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 if($_SESSION['userlevel'] !== "admins"){
     header("location: ../sign_in.php");
 }
+
+
+function registredStaffCount ($conn) 
+{
+    $sql = "SELECT COUNT(id) FROM staff WHERE status = 'ACTIVE'";
+    $result = mysqli_query($conn,$sql);
+    $rows = mysqli_fetch_row($result);
+    return $rows[0];
+}
+
+function registredManagerCount ($conn) 
+{
+    $sql = "SELECT COUNT(id) FROM manager WHERE status = 'ACTIVE'";
+    $result = mysqli_query($conn,$sql);
+    $rows = mysqli_fetch_row($result);
+    return $rows[0];
+}
+    
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +46,7 @@ if($_SESSION['userlevel'] !== "admins"){
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    
 
     <!--Bootsrap 4 CDNs-->
     <!-- Bootstrap CSS -->
@@ -144,13 +165,20 @@ if($_SESSION['userlevel'] !== "admins"){
         
         <!-- Main Section-->
         <div class="col">
+        
+
+
             <div class="row">
                 <div class="container col-sm-6">
-                    These are two resizable columns. Put your charts here
+                <canvas id="myChart" width = "600" height = "600"></canvas>
+
                 </div>
+
+               
+
                 
                 <div class="container col-sm-6">
-                    These are two resizable columns. Put your charts here
+                <canvas id="myChart2" width = "600" height = "600"></canvas>
                 </div>
                 
             </div>
@@ -169,6 +197,147 @@ if($_SESSION['userlevel'] !== "admins"){
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="../javascript/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script> <!-- CHART JS -->
+    <script src = "../javascript/charts.js"></script>
+
+
+
+    <script>
+                
+                
+let myChart = document.getElementById('myChart').getContext('2d');
+let myChart2 = document.getElementById('myChart2').getContext('2d');
+
+// Global Options
+Chart.defaults.global.defaultFontFamily = 'Lato';
+Chart.defaults.global.defaultFontSize = 18;
+Chart.defaults.global.defaultFontColor = '#777';
+
+let Chart1 = new Chart(myChart, {
+  type:'pie', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+  data:{
+    labels:['Manager', 'Staff'],
+    datasets:[{
+      label:'Population',
+      data:[
+       <?php echo registredManagerCount($conn); ?>,
+       <?php echo registredStaffCount($conn); ?>
+        
+      ],
+      //backgroundColor:'green',
+      backgroundColor:[
+        'rgb(0,128,128, 0.9)',
+        'rgb(58, 93, 122, 0.9)'
+      ],
+      borderWidth:1,
+      borderColor:'white',
+      hoverBorderWidth:3,
+      hoverBorderColor:'#000'
+    }]
+  },
+  options:{
+    
+    title:{
+      display:false,
+      text:'Number of users',
+      fontSize:25,
+      
+    },
+    legend:{
+      display:true,
+      position:'right',
+      labels:{
+        fontColor:'white'
+      }
+    },
+    layout:{
+      padding:{
+        left:50,
+        right:0,
+        bottom:0,
+        top:0
+      }
+    },
+    tooltips:{
+      enabled:true
+    }
+  }
+});
+
+
+
+let Chart2 = new Chart(myChart2, {
+  type:'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+  data:{
+    labels:['Manager', 'Staff'],
+    datasets:[{
+      label:'Number of accounts',
+      data:[
+       <?php echo registredManagerCount($conn); ?>,
+       <?php echo registredStaffCount($conn); ?>
+        
+      ],
+      //backgroundColor:'green',
+      backgroundColor:[
+        'rgb(0,128,128, 0.9)',
+        'rgb(58, 93, 122, 0.9)'
+ 
+      ],
+      borderWidth:1,
+      borderColor:'white',
+      hoverBorderWidth:3,
+      hoverBorderColor:'black'
+    }]
+  },
+  options:{
+    
+    title:{
+      display:false,
+      text:'Number of users',
+      fontSize:25,
+      
+    },
+    legend:{
+      display:false,
+      position:'right',
+      labels:{
+        fontColor:'white'
+      }
+    },
+    layout:{
+      padding:{
+        left:50,
+        right:0,
+        bottom:0,
+        top:0
+      }
+    },
+    tooltips:{
+      enabled:true
+    },
+    scales: {
+      xAxes: [{
+        display: true,
+        ticks: {
+          min: 1,
+          fontColor: "rgb(255, 255, 255, 0.5)"
+        }
+      }],
+      yAxes: [{
+        display: true,
+        ticks: {
+            min: 0,
+            fontColor: "rgb(255, 255, 255, 0.5)"
+        }
+      }],
+    }
+  }
+});
+                
+                
+                </script>
+
+    
 </body>
 
 </html>

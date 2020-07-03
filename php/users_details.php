@@ -147,7 +147,7 @@
         <div class="col">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-10">
                         <div class="page-header clearfix">
                             <h2 class="pull-left display-4 text-white m-2 p-2">Managers details</h2>
                         </div>
@@ -176,9 +176,9 @@
                             echo "<table class='table table-dark table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>#</th>";
+                                       
                                         echo "<th>Username</th>";
-                                        echo "<th>Password</th>";
+                                       
                                         echo "<th>Status</th>";
                                         echo "<th>Action</th>";
                                     echo "</tr>";
@@ -186,9 +186,9 @@
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
+                                        
                                         echo "<td>" . $row['username'] . "</td>";
-                                        echo "<td>" . $row['password'] . "</td>";
+                                       
                                         echo "<td>" . $row['status'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='view_manager.php?id=". $row['id'] ."' title='View Manager' data-toggle='tooltip'><i class='fas fa-eye'></i></a>";
@@ -211,6 +211,7 @@
                     
                     ?>
 
+                    <br> <br>
 
                         <div class="  clearfix">
                             <h2 class="pull-left display-4 text-white ">Staff details</h2>
@@ -236,9 +237,9 @@
                             echo "<table class='table table-dark table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>#</th>";
+                                        
                                         echo "<th>Username</th>";
-                                        echo "<th>Password</th>";
+                                       
                                         echo "<th>Status</th>";
                                         echo "<th>Action</th>";
                                     echo "</tr>";
@@ -246,9 +247,9 @@
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
+                                        
                                         echo "<td>" . $row['username'] . "</td>";
-                                        echo "<td>" . $row['password'] . "</td>";
+                                        
                                         echo "<td>" . $row['status'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='view_staff.php?id=". $row['id'] ."' title='View staff' data-toggle='tooltip'><i class='fas fa-eye'></i></a>";

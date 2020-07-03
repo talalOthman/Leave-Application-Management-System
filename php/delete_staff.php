@@ -65,7 +65,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             width: 500px;
             margin: 0 auto;
         }
-        body{ font: 14px sans-serif; background-color: #47717a;}
+        body{ font: 14px sans-serif; background-image: url("../images/background-image.png");}
         .wrapper{ 
             width: 350px;
              margin-left: 40%; 

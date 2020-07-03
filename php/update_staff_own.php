@@ -405,20 +405,13 @@ if(isset($_POST['id']) && !empty($_POST['id'])){
                     <!-- left column -->
                     <div class="col-md-4">
                         <div class="text-center">
-                            <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
-                            <h6>Upload a different photo...</h6>
-
-                            <input type="file" class="form-control">
+                           
                         </div>
                     </div>
 
                     <!-- edit form column -->
                     <div class="col-md-8 personal-info">
-                        <div class="alert alert-info alert-dismissable">
-                            <a class="panel-close close" data-dismiss="alert">×</a>
-                            <i class="fa fa-coffee"></i>
-                            This is an <strong>.alert</strong>. Use this to show important messages to the user.
-                        </div>
+                        
                         <h3>Personal info</h3>
 
                         <form class="form-horizontal" role="form" action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
